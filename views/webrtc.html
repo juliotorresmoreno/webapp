@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebRTC</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="/js/simplewebrtc.bundle.js"></script> 
+    </head>
+    <body>
+        <video height="300" id="localVideo"></video>
+        <div id="remotesVideos"></div>
+        <script >
+            var webrtc = new SimpleWebRTC({
+                localVideoEl: 'localVideo',
+                remoteVideosEl: 'remotesVideos',
+                autoRequestMedia: true,
+                url: 'http://' + location.hostname + ':8888'
+            });
+            webrtc.on('readyToCall', function () {
+                webrtc.joinRoom('name');
+            });
+            /*var config = {
+                isInitiator: true,
+                turn: {
+                        host: 'turn:192.168.1.8:3478',
+                        username: 'turn',
+                        password: '4e25e510bb73f379d9059e5c69d958be'
+                },
+                streams: {
+                        audio: true,
+                        video: false
+                }
+            };*/
+            //var session = new phonertc.Session(config);
+        </script>
+    </body>
+</html>

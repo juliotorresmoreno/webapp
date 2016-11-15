@@ -1,0 +1,18 @@
+<div style="border: 1px solid #eee; display: flex; flex-direction: column" 
+    ng-controller="chatCursosController" ng-style="{height:(windowHeight()-100)+'px'}">
+    <div id="mensajes" class="padding10" style="flex:1; overflow-y: auto;">
+        <div ng-repeat="mensaje in cursos.chats[route.parametros.id].conversacion">
+            {{ formatear_fecha(mensaje.fechaHora, 'H:i:s') }}
+            <a ng-href="/{{ mensaje.usuario }}">
+                {{ mensaje.nombres }} {{ mensaje.apellidos }}
+            </a>:
+            {{ mensaje.mensaje }}
+        </div>
+    </div>
+    <div style="margin: 0; padding: 0" class="input-control text full-size nomargin nopadding">
+        <input style="margin: 0; padding: 0" type="text" 
+                ng-model="cursos.chats[route.parametros.id].mensaje"
+                ng-enter='chatCursosController.enviar()'>
+        <button class="button" ng-click="chatCursosController.enviar()">Enviar</button>
+    </div>    
+</div>

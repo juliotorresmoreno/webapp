@@ -1,0 +1,154 @@
+{
+    "tabla": "usuarios",
+    "campos": [
+        {
+            "nombre": "nombres",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": false,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "apellidos",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": false,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "usuario",
+            "requerido": true,
+            "constante": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": true,
+                "espacios": false,
+                "especiales": true
+            },
+            "unico": true
+        },
+        {
+            "nombre": "email",
+            "requerido": true,
+            "constante": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 100
+            },
+            "formato": "email",
+            "unico": true,
+            "permiso": "permiso_email"
+        },
+        {
+            "nombre": "email_mostrar",
+            "tamano": {
+                "minimo": 3,
+                "maximo": 100
+            },
+            "formato": "email",
+            "permiso": "permiso_email"
+        },
+        {
+            "nombre": "password",
+            "requerido": "insert",
+            "confirmar": true,
+            "mascara": "md5",
+            "tamano": {
+                "minimo": 3,
+                "maximo": 100
+            }
+        },
+        {
+            "nombre": "nacimiento_dia",
+            "permiso": "permiso_nacimiento_dia"
+        },
+        {
+            "nombre": "nacimiento_mes",
+            "permiso": "permiso_nacimiento_dia"
+        },
+        {
+            "nombre": "nacimiento_ano",
+            "permiso": "permiso_nacimiento_ano"
+        },
+        {
+            "nombre": "sexo",
+            "permiso": "permiso_sexo",
+            "enum": [
+                "M", "F", "O"
+            ]
+        },
+        {
+            "nombre": "pais_nacimiento",
+            "permiso": "permiso_pais_nacimiento"
+        },
+        {
+            "nombre": "ciudad_nacimiento",
+            "permiso": "permiso_ciudad_nacimiento"
+        },
+        {
+            "nombre": "pais_residencia",
+            "permiso": "permiso_pais_residencia"
+        },
+        {
+            "nombre": "ciudad_residencia",
+            "permiso": "permiso_ciudad_residencia"
+        },
+        {
+            "nombre": "direccion",
+            "permiso": "permiso_direccion"
+        },
+        {
+            "nombre": "telefono",
+            "permiso": "permiso_telefono"
+        },
+        {
+            "nombre": "celular",
+            "permiso": "permiso_celular"
+        },
+        {
+            "nombre": "personalidad",
+            "permiso": "permiso_personalidad"
+        },
+        {
+            "nombre": "intereses",
+            "permiso": "permiso_intereses"
+        },
+        {
+            "nombre": "series",
+            "permiso": "permiso_series"
+        },
+        {
+            "nombre": "musica",
+            "permiso": "permiso_musica"
+        },
+        {
+            "nombre": "creencias_religiosas",
+            "permiso": "permiso_creencias_religiosas"
+        },
+        {
+            "nombre": "creencias_politicas",
+            "permiso": "permiso_creencias_politicas"
+        },
+        {
+            "nombre": "leyenda"
+        }
+    ]
+}

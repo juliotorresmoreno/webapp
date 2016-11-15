@@ -1,0 +1,59 @@
+{
+    "tabla": "cursos",
+    "campos": [
+        {
+            "nombre": "nombre",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": true,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "descripcion",
+            "requerido": true,
+            "tamano": {
+                "minimo": 0,
+                "maximo": 500
+            }
+        },
+        {
+            "nombre": "prerequisitos",
+            "requerido": true,
+            "tamano": {
+                "minimo": 0,
+                "maximo": 500
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": true,
+                "espacios": true,
+                "especiales": true
+            }
+        },
+        {
+            "nombre": "video_introduccion",
+            "requerido": true,
+            "tamano": {
+                "minimo": 0,
+                "maximo": 500
+            }
+        },
+        {
+            "nombre": "creador",
+            "requerido": true,
+            "foraneo": { "tabla": "usuarios" }
+        },
+        {
+            "nombre": "permiso",
+            "requerido": true
+        }
+    ],
+    "permiso": "permiso"
+}

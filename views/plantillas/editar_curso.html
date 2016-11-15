@@ -1,0 +1,61 @@
+<div ng-controller='cursosController' style="margin-top: 0;">
+    <div class="tabcontrol">
+        <ul class="tabs">
+            <li ng-class="{active:['editar_curso','crear_curso'].indexOf(applicationController.location)+1}">
+                <a ng-if="curso._id" ng-href="/curso/{{curso._id}}/editar">Basico</a>
+                <a ng-if="!curso._id" ng-href="/cursos/crear">Basico</a>
+            </li>
+            <li ng-class="{active:['contenido_curso','editar_contenido_curso','actividades_curso','editar_actividad_curso','preguntas_actividad_curso','editar_pregunta_actividad_curso'].indexOf(applicationController.location)+1}"
+                ng-show="curso._id">
+                <a ng-href="/curso/{{curso._id}}/editar/contenido">Contenido</a>
+            </li>
+            <li ng-if="false" ng-class="{active:['actividades_curso','editar_actividad_curso'].indexOf(applicationController.location)+1}"
+                ng-show="curso._id">
+                <a ng-href="/curso/{{curso._id}}/editar/actividades">Actividades</a>
+            </li>
+        </ul>
+        <div ng-if="['editar_curso', 'crear_curso'].indexOf(applicationController.location) >= 0">
+            <br>
+            <div><label>Nombre</label></div>
+            <div class="input-control text full-size">
+                <input type="text" 
+                        class="form-control"  
+                        ng-model='curso.nombre' />
+            </div>
+            <div><label>Description</label></div>
+            <div class="input-control textarea" style="width: 100%">
+                <textarea class="form-control"  
+                            ng-model='curso.descripcion'></textarea>
+            </div>
+            <div><label>Prerequisitos</label></div>
+            <div class="input-control textarea" style="width: 100%">
+                <textarea class="form-control" 
+                            ng-model='curso.prerequisitos'></textarea>
+            </div>
+            <div><label>Video de introduccion</label></div>
+            <div class="input-control text" style="width: 100%">
+                <input type="text" 
+                        class="form-control" 
+                        ng-model='curso.video_introduccion' />
+            </div>
+            <permisos ng-if="'editar_curso' == applicationController.location" 
+                        data-id='permiso_cursos' leyenda='Editar'
+                        permiso='curso.permiso'
+                        permisos='applicationController.permisos'
+                        callback='cursosController.save'></permisos>
+            <permisos ng-if="'crear_curso' == applicationController.location" 
+                        data-id='permiso_cursos' leyenda='Crear'
+                        permiso='curso.permiso'
+                        permisos='applicationController.permisos'
+                        callback='cursosController.save'></permisos>        
+        </div>
+
+        <div ng-init="pcontenidos='/plantillasHTML/tab_contenidos.html'" ng-include="pcontenidos"></div>
+
+        <div ng-init="pactividad='/plantillasHTML/tab_actividades.html'" ng-include="pactividad"></div>
+
+        <div ng-init="ppreguntas='/plantillasHTML/tab_preguntas.html'" ng-include="ppreguntas"></div>
+
+        {{route.location}}
+    </div>
+</div>

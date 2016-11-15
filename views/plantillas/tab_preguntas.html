@@ -1,0 +1,102 @@
+<div ng-if="['preguntas_actividad_curso', 'editar_pregunta_actividad_curso'].indexOf(applicationController.location)+1">
+    <div ng-if="['agregar_pregunta_actividad_curso', 'editar_pregunta_actividad_curso'].indexOf(route.location)+1">
+        <br/>
+        <fieldset>
+            <legend>Pregunta</legend>
+            <div><label>Enunciado:</label></div>
+            <div class="input-control text full-size">
+                <input type="text" 
+                    class="form-control"  
+                    ng-model='pregunta.enunciado' />
+            </div>
+
+            <div><label>Descripcion:</label></div>
+            <div class="input-control textarea full-size">
+                <textarea class="form-control"  
+                        ng-model='pregunta.descripcion'></textarea>
+            </div>
+
+            <div><label>Tipo:</label></div>
+            <div class="input-control select">
+                <select ng-init="pregunta.tipo='opcion'" ng-model="pregunta.tipo">
+                    <option value="numero">Numero</option>
+                    <option value="texto">Texto</option>
+                    <option value="opcion">Seleccion multiple (1 opcion)</option>
+                    <option value="multiple">Seleccion multiple</option>
+                </select>
+            </div>
+
+            <label style="display: block" class="input-control checkbox">
+                <input type="checkbox" ng-model='pregunta.publico'>
+                <span class="check"></span>
+                <span class="caption">Publico</span>
+            </label>
+
+            <div ng-if="['opcion', 'multiple'].indexOf(pregunta.tipo)+1">
+                <br>
+
+                <fieldset style="min-height: 150px">
+                    <legend>Respuestas</legend>
+                    <div>
+                        <div ng-repeat="respuesta in respuestas" style="display: flex">
+                            <div style="flex: 1">
+                                <div>Enunciado</div>
+                                <div style="flex: 1" class="input-control text full-size">
+                                    <input ng-model="respuesta.enunciado" type="text">
+                                </div>
+                            </div>&nbsp;&nbsp;
+                            <div>
+                                <div>Valor</div>
+                                <div class="input-control text">
+                                    <input ng-model="respuesta.valor" type="text">
+                                    <button ng-click="cursosController.eliminarRespuesta(respuesta)" class="button danger">Eliminar</button>
+                                </div>
+                            </div>
+                            <!--<div>
+                                <button style="float: bottom" class="button danger">Eliminar</button>
+                            </div>-->
+                        </div>
+                        <button class="button primary" ng-click="cursosController.agregarRespuesta()">
+                            Agregar
+                        </button>
+                    </div>
+                </fieldset>
+            </div>
+            <br>
+
+            <div>
+                <span>
+                    <button class="button primary" ng-click="cursosController.guardar_pregunta()">
+                        Guardar
+                    </button>
+                    <button class="button primary" ng-click="cursosController.cancelar_pregunta()">
+                        Cancelar
+                    </button>
+                </span>
+                <span ng-if="pregunta._id" style="float: right">
+                    <button class="button danger" ng-click="cursosController.eliminar_pregunta()">
+                        Eliminar
+                    </button>
+                </span>
+            </div>
+        </fieldset>
+    </div>
+    <div ng-if="route.location === 'preguntas_actividad_curso'">
+        <br>
+        <fieldset style="min-height: 150px">
+            <legend>Preguntas</legend>
+            <div class="listview">
+                <div style="color: black" ng-repeat="pregunta in preguntas" class="list">
+                    <img src="/icons/png/notepad.png" class="list-icon">
+                    <a class="list-title" ng-href="/curso/{{route.parametros.id}}/editar/contenido/{{route.parametros.contenido}}/actividad/{{route.parametros.actividad}}/pregunta/{{pregunta._id}}">
+                        {{pregunta.enunciado}}
+                    </a>
+                    <div class="list-remark">{{ curso.creador }}</div>
+                </div>
+            </div>
+            <button class="button primary" ng-click="cursosController.agregarPregunta()">
+                Agregar
+            </button>
+        </fieldset>
+    </div>
+</div>

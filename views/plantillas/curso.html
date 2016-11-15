@@ -1,0 +1,76 @@
+<div ng-controller="cursosController" style="margin-top: 0; padding-top: 0">
+    <div class="tabcontrol">
+        <ul class="tabs">
+            <li ng-class="{active:route.location=='curso'}">
+                <a href="" ng-href="/curso/{{curso._id}}">Presentacion</a>
+            </li>
+            <li ng-class="{active:['contenido','contenidos','actividad'].indexOf(route.location)+1}">
+                <a href="" ng-href="/curso/{{curso._id}}/contenido">Contenido</a>
+            </li>
+        </ul>
+        <div ng-show="route.location=='curso'">
+            <div style="text-align: center"><h1>{{curso.nombre}}</h1></div>
+            <div ng-html-compile="curso.video_introduccion_html"></div>
+            <br/>
+            <fieldset style="min-height: 100px">
+                <legend>Descripcion</legend>
+                {{curso.descripcion}}
+            </fieldset>
+            <br/>
+            <fieldset>
+                <legend>Prerequisitos</legend>
+                {{curso.prerequisitos}}
+            </fieldset>
+        </div>
+        <div ng-if="route.location=='contenidos'">
+            <div class="listview">
+                <div style="color: black" ng-repeat="contenido in contenidos" class="list">
+                    <img src="/icons/png/notepad.png" class="list-icon">
+                    <a class="list-title" href="" ng-href="/curso/{{route.parametros.id}}/contenido/{{contenido._id}}">
+                        {{contenido.nombre}}
+                    </a>
+                    <div class="list-remark">{{ curso.creador }}</div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="route.location=='contenido'">
+            <div style="text-align: center"><h1>{{contenido.nombre}}</h1></div>
+            <div ng-html-compile="contenido.video_html"></div>
+            <br/>
+
+            <fieldset style="min-height: 100px">
+                <legend>Descripcion</legend>
+                {{contenido.descripcion}}
+            </fieldset>
+            <br/>
+
+            <fieldset>
+                <legend>Actividades</legend>
+                <div class="listview">
+                    <div style="color: black" ng-repeat="actividad in actividades" class="list">
+                        <img src="/icons/png/notepad.png" class="list-icon">
+                        <a class="list-title" ng-href="/curso/{{route.parametros.id}}/contenido/{{route.parametros.contenido}}/actividad/{{actividad._id}}">
+                            {{actividad.nombre}}
+                        </a>
+                        <div class="list-remark">{{ curso.creador }}</div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div style="padding-top: 20px" ng-if="route.location=='actividad'">
+            <div style="color: black; margin-bottom: 10px" ng-repeat="pregunta in preguntas">
+                <div>{{pregunta.enunciado}}</div>
+                <div ng-if="pregunta.tipo=='opcion'" ng-repeat="respuesta in pregunta.respuestas">
+                    <label class="input-control radio">
+                        <input ng-model="pregunta.respuesta" value="{{$index}}" type="radio">
+                        <span class="check"></span>
+                        <span class="caption">{{respuesta.enunciado}}</span>
+                    </label>
+                </div>
+            </div>
+            <button class="button primary">Guardar y terminar</button>
+            <button class="button primary">Guardar</button>
+        </div>
+    </div>
+    "{{route.location}}"
+</div>

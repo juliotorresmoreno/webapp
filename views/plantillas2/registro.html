@@ -1,0 +1,48 @@
+<div ng-controller='authController' class='container'>
+    <div class='row' style='margin-bottom: 100px'>
+        <div class='col-lg-4 col-center'>
+            <form class='form-signin' name='registro'>
+                <h2 class='form-signin-heading'>Registrate</h2>
+                <input type='text' class='form-control' placeholder='Nombres' 
+                       ng-model='authController.nombres' name='nombres' />
+                <div class='error' ng-repeat='error in authController.errores.nombres'>
+                    <div>{{ error}}</div>
+                </div>
+
+                <input type='text' class='form-control' placeholder='Apellidos' 
+                       ng-model='authController.apellidos' name='apellidos' />
+                <div class='error' ng-repeat='error in authController.errores.apellidos'>
+                    <div>{{ error}}</div>
+                </div>
+
+                <input type='text' class='form-control' placeholder='Nombre de usuario' 
+                       ng-model='authController.usuario' name='usuario' />
+                <div class='error' ng-repeat='error in authController.errores.usuario'>
+                    <div>{{ error}}</div>
+                </div>
+
+                <input type='text' class='form-control' placeholder='Correo electronico' 
+                       ng-model='authController.email' name='email' />
+                <div class='error' ng-repeat='error in authController.errores.email'>
+                    <div>{{ error}}</div>
+                </div>
+
+                <input type='password' class='form-control' placeholder='Contraseña' 
+                       ng-model='authController.password' name='password' />
+                <div class='error' ng-repeat='error in authController.errores.password'>
+                    <div>{{ error}}</div>
+                </div>
+
+                <input type='password' class='form-control' placeholder='Confirmar Contraseña' 
+                       ng-model='authController.password_confirmation' name='password_confirmation' />
+                <div class='error' ng-repeat='error in authController.errores.password_confirmation'>
+                    <div>{{ error}}</div>
+                </div>
+
+                <button class='btn btn-primary' type='submit' ng-click='authController.registrar()'>
+                    Registrarme
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

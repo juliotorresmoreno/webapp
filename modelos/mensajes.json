@@ -1,0 +1,21 @@
+{
+    "tabla": "@",
+    "campos": [
+        {
+            "nombre": "remitente",
+            "requerido": true,
+            "constante": true,
+            "modelo": "usuario"
+        },
+        {
+            "nombre": "destinatarios",
+            "requerido": true,
+            "constante": true,
+            "multiple": true,
+            "modelo": "usuario"
+        },
+        { "nombre": "asunto", "constante": true },
+        { "nombre": "contenido", "constante": true },
+        { "nombre": "fecha", "requerido": true, "constante": true, "formato": "fecha" }
+    ]
+}

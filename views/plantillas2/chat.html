@@ -1,0 +1,51 @@
+<div ng-controller='chatsController'>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{chat.nombres}} {{chat.apellidos}}</h3>
+        </div>
+        <div class="panel-body">
+            <button class='btn btn-primary' style='margin: 0 10px 0 0' ng-click='chatsController.videollamada()'>
+                VideoLLamada
+            </button>
+            <button class='btn btn-primary' style='margin: 0 10px 0 0'>Llamar</button>
+            <button class='btn btn-primary' style='margin: 0 10px 0 0'>Enviar archivo</button>
+        </div>
+    </div>
+    <div class="panel panel-primary" ng-if="chat.modo == 'videollamada'" id="remotesVideos"></div>
+
+    <div class="panel panel-primary" ng-if="chat.modo != 'videollamada'" style='height: 400px;'>
+        <div class="panel-body" style='height:330px; overflow-y: auto;'>
+            <div ng-if="chat.modo != 'videollamada'" ng-repeat='mensaje in chat.mensajes' class='alert'
+                 ng-class="{mensajes_left:   chatsController.isMe(mensaje),
+                            mensajes_right: !chatsController.isMe(mensaje),
+                            'alert-info':    chatsController.isMe(mensaje),
+                            'alert-danger': !chatsController.isMe(mensaje)}">
+                <div ng-if='mensaje.mensaje != undefined'>
+                    <div>{{formatear_fecha(mensaje.fecha, 'Y-m-d H:i:s')}}: {{chatsController.getName(mensaje)}}</div>
+                    <div>{{mensaje.mensaje}}</div>
+                </div>
+                <div ng-if="mensaje.tipo == 'videollamada'">
+                    <div ng-if="mensaje.estado !== 'rechazado'">
+                        <div ng-if="chatsController.isMe(mensaje)">
+                            Haz hecho una solicitud de videollamada.
+                            <a style='color: blue' href='' ng-click="chatsController.rechazar(mensaje)">Cancelar</a>
+                        </div>
+                        <div ng-if="!chatsController.isMe(mensaje)">
+                            Te han hecho una solicitud de videollamada.
+                            <a style='color: blue' href='' ng-click="chatsController.aceptar(mensaje)">Aceptar</a>&nbsp;
+                            <a style='color: blue' href='' ng-click="chatsController.rechazar(mensaje)">Rechazar</a>
+                        </div>
+                    </div>
+                    <div ng-if="mensaje.estado == 'rechazado'">
+                        Solicitud de videollamada cancelado/rechazado.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input type='text' class='form-control' 
+                   ng-model='chatsController.mensaje' 
+                   ng-enter='chatsController.enviar(chat._id)' />
+        </div>
+    </div>
+</div>

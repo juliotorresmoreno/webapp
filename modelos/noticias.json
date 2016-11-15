@@ -1,0 +1,29 @@
+{
+    "tabla": "@",
+    "campos": [
+        {
+            "nombre": "usuario",
+            "requerido": true,
+            "foraneo": {
+                "tabla": "usuarios"
+            }
+        },
+        {
+            "nombre": "usuario",
+            "requerido": true,
+            "constante": true,
+            "modelo": "usuario"
+        },
+        {
+            "nombre": "comentario",
+            "constante": true,
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 600
+            }
+        },
+        { "nombre": "fecha", "requerido": true, "constante": true, "formato": "fecha" }
+    ],
+    "permiso": "permiso"
+}

@@ -1,0 +1,72 @@
+<div ng-controller='mensajesController'>
+    <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 10px;">
+        <li role="presentation" ng-class="{ active: applicationController.location == 'entrada' }">
+            <a ng-href='{{applicationController.servidor}}/mensajes'>Entrada</a>
+        </li>
+        <li role="presentation" ng-class="{ active: applicationController.location == 'salida' }">
+            <a ng-href='{{applicationController.servidor}}/mensajes/salida'>Salida</a>
+        </li>
+        <li role="presentation" ng-class="{ active: applicationController.location == 'papelera' }">
+            <a ng-href='{{applicationController.servidor}}/mensajes/papelera'>papelera</a>
+        </li>
+    </ul>
+    <div>
+        <button class="btn btn-primary" style="margin: 0 10px 10px 0" ng-click='mensajesController.nuevo()'>
+            Nuevo
+        </button>
+        <button class="btn btn-primary" style="margin: 0 10px 10px 0" ng-click='mensajesController.restaurarSeleccionados()'
+                ng-if="applicationController.location == 'papelera'">Restaurar</button>
+        <button class="btn btn-primary" style="margin: 0 10px 10px 0" ng-click='mensajesController.eliminarSeleccionados()'>
+            Eliminar
+        </button>
+    </div>
+    <div class="panel">
+        <div class="panel-body" style="min-height: 450px; margin: 0; padding: 0">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th style="width: 30px">
+                            <input ng-model="mensajes.check" ng-change="mensajesController.seleccionarTodos()" type="checkbox" />
+                        </th>
+                        <th style="width: 50%">Asunto</th>
+                        <th>De</th>
+                        <th style="width: 150px">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="mensaje in mensajes.mensajes">
+                        <td style="width: 30px">
+                            <input ng-model="mensaje.check" type="checkbox">
+                        </td>
+                        <td ng-click="mensajesController.ver(mensaje)" style="cursor: pointer;">
+                            {{mensaje.asunto}}
+                        </td>
+                        <td ng-click="mensajesController.ver(mensaje)" style="cursor: pointer;">
+                            {{mensaje.remitente.nombres}} {{mensaje.remitente.apellidos}}
+                        </td>
+                        <td ng-click="mensajesController.ver(mensaje)" style="cursor: pointer;">
+                            {{formatear_fecha(mensaje.fecha, 'd/m/Y H:i:s')}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <ul ng-if="mensajes.paginas.length > 1" class="pagination">
+            <li>
+                <a ng-href="?pagina={{mensajes.paginaInicial}}" aria-label="Previous">
+                   <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li ng-class="{active: mensajes.pagina==pagina}" ng-repeat="pagina in mensajes.paginas">
+                <a ng-href="?pagina={{pagina}}">{{pagina}}</a>
+            </li>
+            <li>
+                <a ng-href="?pagina={{mensajes.paginaFinal}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

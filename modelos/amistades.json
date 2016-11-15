@@ -1,0 +1,19 @@
+{
+    "tabla": "@",
+    "campos": [
+        {
+            "nombre": "_id",
+            "requerido": true,
+            "foraneo": {
+                "tabla": "usuarios"
+            }
+        },
+        {
+            "nombre": "relacion",
+            "requerido": true,
+            "enum": [
+                "solicitado", "solicitante", "confirmado"
+            ]
+        }
+    ]
+}

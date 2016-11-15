@@ -1,0 +1,39 @@
+<div ng-controller='galeriasController'>
+    <div id="referencia" class="panel panel-default">
+        <div class="panel-heading">Renombrar foto {{galeriasController.id}}.</div>
+        <div class="panel-body">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Nombre" ng-model='galeriasController.foto' />
+                <span class="input-group-btn">
+                    <button class='btn btn-primary' ng-click='galeriasController.renombrarFoto()'>Renombrar</button>
+                </span>
+            </div>
+            <div ng-if='galeriasController.errores.success === false'>
+                <div class="error" ng-repeat='error in galeriasController.errores.foto'>
+                    {{error}}
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class='btn btn-primary' ng-click='galeriasController.establecerFotoPerfil()'>
+                Establecer como foto de perfil
+            </button>
+        </div>
+    </div>
+
+    {{galeriasController.estilos.foto}}
+    
+    <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: center">
+            {{galeriasController.id}}
+        </div>
+        <div class="panel-body">
+            <a class="absoluto" ng-style="galeriasController.estilos.absoluto" ng-href="{{applicationController.servidor}}/galerias/{{galeriasController.nombre}}/{{galeriasController.anterior}}">
+                <img id="foto" ng-style="galeriasController.estilos.foto" ng-src='{{applicationController.servidor}}/api/v1/galerias/{{galeriasController.nombre}}/{{galeriasController.id}}' />
+            </a>
+            <a class="absoluto" aria-hidden="true" style="float: left; z-index: 100; background: white"
+               ng-href="{{applicationController.servidor}}/galerias/{{galeriasController.nombre}}/{{galeriasController.siguiente}}">Anterior</a>
+            <div ng-style="galeriasController.estilos.contenedor"></div>
+        </div>
+    </div>
+</div>

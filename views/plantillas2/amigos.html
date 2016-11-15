@@ -1,0 +1,62 @@
+<div ng-controller='amigosController'>
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            <input type="text" class='form-control' placeholder='Escribe el nombre de tu amigo' 
+                   ng-model='amigos.busqueda' ng-change="amigos.busqueda_change()" />
+        </div>
+    </div>
+
+    <div ng-repeat='persona in amigos.personas' class='panel panel-default'>
+        <div class='panel-heading'>
+            <a ng-href="{{persona.usuario}}">{{persona.nombres}} {{persona.apellidos}}</a>
+        </div>
+        <div class='panel-body'>
+            <div style='display: table; margin: 0 0 10px 0'>
+                <div style='display: table-row'>
+                    <div style='display: table-cell'>
+                        <div style='width: 80px; height: 80px'>
+                            <img src='{{applicationController.servidor}}/images/avatar-gladiator-linux.png' style='max-width: 80px; max-height: 80px'>
+                        </div>
+                    </div>
+                    <div style='display: table-cell; width: 100%; vertical-align: top'>
+                        <div style='margin: 0 0 0 10px'>
+                            <div>{{persona.email_mostrar||persona.email||'Email desconocido'}}</div>
+                            <div>Vive en {{persona.ciudad_residencia||'algun lugar'}}</div>
+                            <div>Sexo {{applicationController.sexos[persona.sexo]||'desconocido'}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span style='margin: 0 0 0 10px' ng-if='persona.relacion.relacion == undefined'>
+                <a href='' ng-click='amigosController.agregarSolicitudAmistad(persona)'>Agregar</a>	
+            </span>
+            <span style='margin: 0 0 0 10px' ng-if='persona.relacion.relacion == "solicitante"'>
+                <a href='' ng-click='amigosController.agregarSolicitudAmistad(persona)'>Aceptar amistad</a>
+            </span>
+            <span style='margin: 0 0 0 10px' ng-if='persona.relacion.relacion == "solicitado"'>
+                <a href='' ng-click='amigosController.cancelarSolicitudAmistad(persona)'>Cancelar solicitud</a>
+            </span>
+            <span style='margin: 0 0 0 10px' ng-if='persona.relacion.relacion == "solicitante"'>
+                <a href='' ng-click='amigosController.cancelarSolicitudAmistad(persona)'>Rechazar amistad</a>
+            </span>
+            <span style='margin: 0 0 0 10px' ng-if='persona.relacion.relacion == "confirmado"'>
+                <a href=''>Enviar mensaje</a>
+            </span>
+        </div>
+    </div>
+    <ul ng-if="amigos && amigos.paginas && amigos.paginas.length > 1" class="pagination">
+        <li>
+            <a ng-href="{{amigos.seleccionarPagina(amigos.paginaInicial)}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li ng-class="{active: amigos.pagina==pagina}" ng-repeat="pagina in amigos.paginas">
+            <a ng-href="{{amigos.seleccionarPagina(pagina)}}">{{pagina}}</a>
+        </li>
+        <li>
+            <a ng-href="{{amigos.seleccionarPagina(amigos.paginaFinal)}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,34 @@
+<div ng-controller='galeriasController'>
+    <div class="panel panel-default" style="margin: 0 10px 15px 0">
+        <div class="panel-heading">Crea una nueva galeria.</div>
+        <div class="panel-body">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Nombre" ng-model='galeriasController.nombre' />
+                <span class="input-group-btn">
+                    <permisos data-id='permiso_galeria' leyenda='Crear' 
+                              permiso='galeriasController.permiso', 
+                              permisos='applicationController.permisos'
+                              callback='galeriasController.save'
+                              tipo='right'></permisos>
+                </span>
+            </div>
+            <div ng-if='galeriasController.errores.success === false'>
+                <div class="error" ng-repeat='error in galeriasController.errores.nombre'>
+                    {{error}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div ng-repeat='galeria in galeriasController.galerias' class="col-sm-4" style="padding: 0 10px 0 0">
+            <div class="panel panel-default">
+                <div class="panel-heading">{{galeria.nombre}}</div>
+                <div class="panel-body" style="height: 200px">
+                    <a ng-href="{{applicationController.servidor}}/galerias/{{galeria.nombre}}" style="margin: 0" class="thumbnail">
+                        <img style="max-height: 200px; max-width: 190px" ng-src='{{applicationController.servidor}}/api/v1/galerias/{{galeria.nombre}}/@preview' />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

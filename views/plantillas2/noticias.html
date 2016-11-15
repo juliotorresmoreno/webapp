@@ -1,0 +1,86 @@
+<div ng-controller='noticiasController'>
+    <div ng-if='noticiasController.modo == "noticias"'>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <textarea class="form-control" ng-model='noticias.comentario' style="min-height: 70px"></textarea>
+                <div ng-if='noticias.errores.success == false'>
+                    <div class='error' ng-repeat='error in noticias.errores.comentario'>
+                        <div>{{ error}}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px">
+                    <permisos data-id='publicar' leyenda='Publicar' 
+                              permiso='noticias.publicar'
+                              permisos='applicationController.permisos'
+                              callback='noticiasController.publicar'></permisos>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" ng-repeat="noticia in noticias.noticias | orderBy:'-fecha'" ng-if="noticia.estado!='eliminado'">
+            <div class="panel-heading">
+                {{formatear_fecha(noticia.fecha, 'Y-m-d H:i:s')}}
+                <a ng-href="{{applicationController.servidor}}/{{noticia.usuario.usuario}}">
+                    {{noticia.usuario.nombres}} {{noticia.usuario.apellidos}}
+                </a>
+                <button ng-if='noticia.usuario.usuario==applicationController.session.usuario' 
+                        ng-click="noticiasController.eliminar(noticia)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="panel-body">
+                {{noticia.comentario}}
+            </div>
+            <div class="panel-footer" style="padding: 5px 15px 5px 15px">
+                <span style="margin: 0 10px 10px 0">
+                    <a href="" ng-click="noticiasController.like(noticia)">Me gusta</a>
+                    <span class="badge">{{noticia.likes.length}}</span>
+                </span>
+                <span style="margin: 0 10px 10px 0">
+                    <a href="" ng-click="noticiasController.comentar(noticia)">Comentar</a>
+                    <span class="badge">{{noticia.comentarios.length}}</span>
+                </span>
+                <span style="margin: 0 10px 10px 0" class="hide">
+                    <a href="" ng-click="noticiasController.compartir(noticia)">Compartir</a>
+                    <span class="badge">{{noticia.compartidos.length}}</span>
+                </span>
+            </div>
+        </div>
+        <button class="btn btn-primary" style="margin-left: 20px" ng-click="noticiasController.cargar_mas()">Mas</button>
+    </div>
+    <div ng-if='noticiasController.modo == "comentario"'>
+        <div class="panel panel-default" ng-if="noticias.noticia.estado!='eliminado'">
+            <div class="panel-heading">
+                {{formatear_fecha(noticias.noticia.fecha, 'Y-m-d H:i:s')}}
+                <a ng-href="{{applicationController.servidor}}/{{noticias.noticia.usuario.usuario}}">
+                    {{noticias.noticia.usuario.nombres}} {{noticias.noticia.usuario.apellidos}}
+                </a>
+                <button ng-click="noticiasController.cancelar_comentario()" 
+                        type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="panel-body">{{noticias.noticia.comentario}}</div>
+            <div class="panel-footer" style="padding: 10px 15px 10px 15px">
+                <input type='text' class='form-control' style="margin: 0" placeholder="Comentario" 
+                       ng-model='noticias.comentario' 
+                       ng-enter="noticiasController.comentar_noticia(noticias.noticia)" />
+                <div ng-if='noticias.errores.success == false'>
+                    <div class='error' ng-repeat='error in noticias.errores.comentario'>
+                        <div>{{ error}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" ng-repeat="comentario in noticias.noticia.comentarios | orderBy:'-fecha'" ng-if="noticia.estado!='eliminado'">
+            <div class="panel-heading">
+                {{formatear_fecha(comentario.fecha, 'Y-m-d H:i:s')}}
+                <a ng-href="{{applicationController.servidor}}/{{comentario.usuario.usuario}}">
+                    {{comentario.usuario.nombres}} {{comentario.usuario.apellidos}}
+                </a>
+            </div>
+            <div class="panel-body">
+                {{comentario.comentario}}
+            </div>
+        </div>
+    </div>
+</div>

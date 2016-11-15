@@ -1,0 +1,88 @@
+<nav class='navbar navbar-default navbar-fixed-top'>
+    <div class='container'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' ng-href='{{applicationController.servidor}}/'>{{titulo}}</a>
+        </div>
+        <div id='navbar' class='navbar-collapse collapse'>
+            <ul class='nav navbar-nav'>
+                <li ng-class='{ active: applicationController.location == "home" }'>
+                    <a ng-href='{{applicationController.servidor}}/'>Inicio</a>
+                </li>
+                <li style='display: none' ng-class='{ active: applicationController.location == "about" }'>
+                    <a ng-href='{{applicationController.servidor}}/about'>Acerca de</a>
+                </li>
+                <li style='display: none' ng-class='{ active: applicationController.location == "contacto" }'>
+                    <a ng-href='{{applicationController.servidor}}/contacto'>Contacto</a>
+                </li>
+            </ul>
+            <ul class='nav navbar-nav navbar-right'>
+                <li ng-if='applicationController.isLogged()'>
+                    <a ng-href='{{applicationController.servidor}}/logout'>Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div ng-class='{ container: applicationController.isLogged() }'>
+    <div style='margin-top: 60px;' class='tabla'>
+        <div class='fila'>
+            <div class='celda menu'>
+                <div class='contenedor'>
+                    <div style='margin-bottom: 10px'>
+                        <a style='display: block; enlace' ng-href='{{applicationController.servidor}}/galerias'>
+                            <img style='width: 200px; height: 200px; enlace' class='img-thumbnail' alt='200x200' 
+                                 ng-src='{{applicationController.servidor}}/api/v1/galerias/jtorres/fotoPerfil' />
+                        </a>
+                    </div>
+                    <div class='panel panel-default' style='padding: 10px 20px 10px 20px; margin-bottom: 10px'>
+                        <div>
+                            <a ng-href='{{applicationController.servidor}}/{{applicationController.session.usuario}}'>
+                                {{applicationController.session.nombres}} {{applicationController.session.apellidos}}
+                            </a>
+                        </div>
+                        <div><a ng-href='{{applicationController.servidor}}/perfil/editar'>Editar perfil</a></div>
+                    </div>
+                    <div class='list-group'>
+                        <a ng-href='{{applicationController.servidor}}/noticias'    class='list-group-item'>
+                            Noticias
+                        </a>
+                        <a ng-href='{{applicationController.servidor}}/mensajes'    class='list-group-item'>
+                            Mensajes
+                        </a>
+                        <a ng-href='{{applicationController.servidor}}/amigos'      class='list-group-item'>
+                            Amigos
+                        </a>
+                        <a ng-href='{{applicationController.servidor}}/solicitudes' class='list-group-item'>
+                            Solicitudes
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class='celda contenido'>
+                <div class='contenedor' style="min-height: 600px;" ng-class='{hide: !mostrar}'
+                     ng-html-compile='applicationController.contenidoHTML'></div>
+            </div>
+            <div class='celda publicidad' style='width: 150px'>
+                <div class='messenger contenedor' ng-include='applicationController.rightHTML'/>
+                <!--<div class='contenedor'>publicidad</div>-->
+            </div>
+        </div>
+    </div>
+    <footer class='footer' style='text-align: center'>
+        <p>&copy; Company 2015</p>
+    </footer>
+</div>
+
+<script type="text/javascript">
+    entrelazar(); 
+    setTimeout(function() { 
+        url_location = '@'; 
+    }, 1000);
+</script>

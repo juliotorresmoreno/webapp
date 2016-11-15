@@ -1,0 +1,330 @@
+<div ng-controller='perfilController'>
+    <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 10px;">
+        <li role="presentation" ng-class="{ active: applicationController.location == 'basico' }">
+            <a ng-href='{{applicationController.servidor}}/perfil/editar/basico'>Basico</a>
+        </li>
+        <li role="presentation" ng-class="{ active: applicationController.location == 'contacto' }">
+            <a ng-href='{{applicationController.servidor}}/perfil/editar/contacto'>Contacto</a>
+        </li>
+        <li role="presentation" ng-class="{ active: applicationController.location == 'intereses' }">
+            <a ng-href='{{applicationController.servidor}}/perfil/editar/intereses'>Intereses</a>
+        </li>
+    </ul>
+    <div ng-if="applicationController.location == 'basico'" class='row form-horizontal'>
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Nombres:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Nombres' 
+                       ng-model='perfil.nombres' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfil.errores.success == false' class='form-group'>
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <div class='error' ng-repeat='error in perfil.errores.nombres'>
+                    <div>{{ error}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Apellidos:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Apellidos' 
+                       ng-model='perfil.apellidos' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfil.errores.success == false' class='form-group'>
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <div class='error' ng-repeat='error in perfil.errores.apellidos'>
+                    <div>{{ error}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <button class="btn btn-primary" ng-click='perfilController.guardarBasico()'>Guardar</button>
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Correo electronico:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Correo electronico' 
+                       ng-model='perfil.email' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfil.errores.success == false' class='form-group'>
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <div class='error' ng-repeat='error in perfil.errores.email'>
+                    <div>{{ error}}</div>
+                </div>
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_email' leyenda='Guardar' 
+                          permiso='perfil.permiso_email', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarEmail'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class='control-label col-sm-4'>Dia nacimiento:</label>
+            <div class='col-sm-3'>
+                <select ng-model='perfil.nacimiento_mes' class="form-control" ng-disabled='!perfilController.isMe()'
+                        ng-options="mes.label for mes in applicationController.meses_disponibles">
+                </select>
+            </div>
+            <div class='col-sm-2'>
+                <select ng-model='perfil.nacimiento_dia' class="form-control" ng-disabled='!perfilController.isMe()'
+                        ng-options="dia.value for dia in perfil.nacimiento_mes.days">
+                </select>
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_nacimiento_dia' leyenda='Guardar' 
+                          permiso='perfil.permiso_nacimiento_dia', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarDiaNacimiento'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class='control-label col-sm-4'>Año nacimiento:</label>
+            <div class='col-sm-2'>
+                <select ng-model='perfil.nacimiento_ano' class="form-control" ng-disabled='!perfilController.isMe()'
+                        ng-options="ano.value for ano in applicationController.anos_disponibles">
+                </select>
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_nacimiento_ano' leyenda='Guardar' 
+                          permiso='perfil.permiso_nacimiento_ano', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarAnoNacimiento'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class='control-label col-sm-4'>Sexo:</label>
+            <div class='col-sm-3'>
+                <select ng-model='perfil.sexo' class="form-control" ng-disabled='!perfilController.isMe()'>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                    <option value="O">Otro</option>
+                </select>
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_sexo' leyenda='Guardar' 
+                          permiso='perfil.permiso_sexo', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarSexo'
+                          tipo='dropup'></permisos>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="applicationController.location == 'contacto'" class='row form-horizontal'>
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Pais de nacimiento:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Pais de nacimiento' 
+                       ng-model='perfil.pais_nacimiento' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_pais_nacimiento' leyenda='Guardar' 
+                          permiso='perfil.permiso_pais_nacimiento', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarPaisNacimiento'></permisos>
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group'>
+            <label class='control-label col-sm-4'>Ciudad de nacimiento:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Ciudad de nacimiento' 
+                       ng-model='perfil.ciudad_nacimiento' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_ciudad_nacimiento' leyenda='Guardar' 
+                          permiso='perfil.permiso_ciudad_nacimiento', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarCiudadNacimiento'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Pais de residencia:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Pais de residencia' 
+                       ng-model='perfil.pais_residencia' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_pais_residencia' leyenda='Guardar' 
+                          permiso='perfil.permiso_pais_residencia', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarPaisResidencia'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Ciudad de residencia:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Ciudad de residencia' 
+                       ng-model='perfil.ciudad_residencia' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_ciudad_residencia' leyenda='Guardar' 
+                          permiso='perfil.permiso_ciudad_residencia', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarCiudadResidencia'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Direccion:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Direccion' 
+                       ng-model='perfil.direccion' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_direccion' leyenda='Guardar' 
+                          permiso='perfil.permiso_direccion', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarDireccion'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Telefono:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Telefono' 
+                       ng-model='perfil.telefono' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_telefono' leyenda='Guardar' 
+                          permiso='perfil.permiso_telefono', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarTelefono'></permisos>
+            </div>
+        </div>
+
+        <div class='form-group'>
+            <label class='control-label col-sm-4'>Celular:</label>
+            <div class='col-sm-6'>
+                <input type='text' class='form-control' placeholder='Celular' 
+                       ng-model='perfil.celular' ng-readonly='!perfilController.isMe()' />
+            </div>
+        </div>
+        <div ng-if='perfilController.isMe()' class='form-group' style="margin-bottom: 10px !important">
+            <div class='col-sm-4'></div>
+            <div class='col-sm-6'>
+                <permisos data-id='permiso_celular' leyenda='Guardar' 
+                          permiso='perfil.permiso_celular', 
+                          permisos='applicationController.permisos'
+                          callback='perfilController.guardarCelular'
+                          tipo='dropup'></permisos>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="applicationController.location == 'intereses'" class='row'>
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class="control-label">Personalidad:</label>
+            <textarea style="height: 120px" ng-model='perfil.personalidad' ng-readonly='!perfilController.isMe()' class="form-control"></textarea>
+        </div>
+        <div ng-if='perfilController.isMe()' style="margin-bottom: 10px !important">
+            <permisos data-id='permiso_personalidad' leyenda='Guardar' 
+                      permiso='perfil.permiso_personalidad', 
+                      permisos='applicationController.permisos'
+                      callback='perfilController.guardarPersonalidad'></permisos>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class="control-label">Intereses:</label>
+            <textarea style="height: 120px" ng-model='perfil.intereses' ng-readonly='!perfilController.isMe()' class="form-control"></textarea>
+        </div>
+        <div ng-if='perfilController.isMe()' style="margin-bottom: 10px !important">
+            <permisos data-id='permiso_intereses' leyenda='Guardar' 
+                      permiso='perfil.permiso_intereses', 
+                      permisos='applicationController.permisos'
+                      callback='perfilController.guardarIntereses'></permisos>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class="control-label">Series:</label>
+            <textarea style="height: 120px" ng-model='perfil.series' ng-readonly='!perfilController.isMe()' class="form-control"></textarea>
+        </div>
+        <div ng-if='perfilController.isMe()' style="margin-bottom: 10px !important">
+            <permisos data-id='permiso_series' leyenda='Guardar' 
+                      permiso='perfil.permiso_series', 
+                      permisos='applicationController.permisos'
+                      callback='perfilController.guardarSeries'></permisos>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class="control-label">Musica:</label>
+            <textarea style="height: 120px" ng-model='perfil.musica' ng-readonly='!perfilController.isMe()' class="form-control"></textarea>
+        </div>
+        <div ng-if='perfilController.isMe()' style="margin-bottom: 10px !important">
+            <permisos data-id='permiso_musica' leyenda='Guardar' 
+                      permiso='perfil.permiso_musica', 
+                      permisos='applicationController.permisos'
+                      callback='perfilController.guardarMusica'></permisos>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class="control-label">Creencias religiosas:</label>
+            <textarea style="height: 120px" ng-model='perfil.creencias_religiosas' ng-readonly='!perfilController.isMe()' class="form-control"></textarea>
+        </div>
+        <div ng-if='perfilController.isMe()' style="margin-bottom: 10px !important">
+            <permisos data-id='permiso_creencias_religiosas' leyenda='Guardar' 
+                      permiso='perfil.permiso_creencias_religiosas', 
+                      permisos='applicationController.permisos'
+                      callback='perfilController.guardarCreenciasReligiosas'></permisos>
+        </div>
+
+        <div class='form-group' style="margin-bottom: 10px !important">
+            <label class="control-label">Creencias politicas:</label>
+            <textarea style="height: 120px" ng-model='perfil.creencias_politicas' ng-readonly='!perfilController.isMe()' class="form-control"></textarea>
+        </div>
+        <div ng-if='perfilController.isMe()' style="margin-bottom: 10px !important">
+            <permisos data-id='permiso_creencias_politicas' leyenda='Guardar' 
+                      permiso='perfil.permiso_creencias_politicas', 
+                      permisos='applicationController.permisos'
+                      callback='perfilController.guardarCreenciasPoliticas'
+                      tipo='dropup'></permisos>
+        </div>
+    </div>
+</div>

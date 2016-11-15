@@ -1,0 +1,19 @@
+{
+    "tabla": "galerias",
+    "campos": [
+        {
+            "nombre": "nombre",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": true,
+                "espacios": true,
+                "especiales": false
+            }
+        }
+    ]
+}

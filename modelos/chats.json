@@ -1,0 +1,22 @@
+{
+    "tabla": "@",
+    "campos": [
+        {
+            "nombre": "usuario",
+            "requerido": true,
+            "foraneo": {
+                "tabla": "usuarios"
+            }
+        },
+        {
+            "nombre": "mensaje",
+            "constante": true
+        },
+        {
+            "nombre": "fecha",
+            "requerido": true,
+            "constante": true,
+            "formato": "fecha"
+        }
+    ]
+}

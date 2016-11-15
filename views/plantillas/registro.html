@@ -1,0 +1,65 @@
+<div style="padding: 10px" ng-controller="authController" style="margin-top: 0; display: none" ng-class="{mostrar:!preload}">
+    <div class="grid">
+        <div class="row cells3">
+            <div class="cell"></div>
+            <div class="cell colspan1">
+                <div class="login-form padding20 block-shadow">
+                    <form>
+                        <h1 class="text-light">Registrate</h1>
+                        <hr class="thin"/>
+                        <br />
+                        <div class="input-control text full-size" data-role="input">
+                            <label for="nombres">Nombres</label>
+                            <input type="text" ng-model="authController.nombres" name="nombres">
+                            <button class="button helper-button clear"><span class="mif-cross"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="input-control password full-size" data-role="input">
+                            <label for="apellidos">Apellidos:</label>
+                            <input type="text" ng-model="authController.apellidos" name="apellidos">
+                            <button class="button helper-button clear"><span class="mif-cross"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="input-control password full-size" data-role="input">
+                            <label for="usuario">Usuario:</label>
+                            <input type="text" ng-model="authController.usuario" name="usuario">
+                            <button class="button helper-button clear"><span class="mif-cross"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="input-control password full-size" data-role="input">
+                            <label for="email">Correo electronico:</label>
+                            <input type="text" ng-model="authController.email" name="email">
+                            <button class="button helper-button clear"><span class="mif-cross"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="input-control password full-size" data-role="input">
+                            <label for="password">Contraseña:</label>
+                            <input type="password" ng-model="authController.password" name="password">
+                            <button class="button helper-button reveal"><span class="mif-looks"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="input-control password full-size" data-role="input">
+                            <label for="password_confirmation">Reescribir contraseña:</label>
+                            <input type="password" ng-model="authController.password_confirmation" name="password_confirmation">
+                            <button class="button helper-button reveal"><span class="mif-looks"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-actions">
+                            <button type="submit" class="button primary" ng-click='authController.registrar()'>
+                                Registrate
+                            </button>
+                            <button type="reset" class="button link">Resetear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="cell"></div>
+        </div>
+    </div>    
+</div>

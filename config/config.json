@@ -1,0 +1,39 @@
+{
+    "database": {
+        "username": "melleva",
+        "password": "paramore",
+        "servidor": "localhost", 
+        "database": "melleva",
+        "puerto": "27017"
+    },
+    "enviroment": "desarrollo",
+    "servidor": "melleva.ml",
+    "limite": 20,
+    "mensajes": { "limite": 30 },
+    "pagina": 1,
+    "puertos": { "http": 80, "https": 443 },
+    "numCPUs": 1,
+    "certificados": {
+        "key": "/home/ubuntu/certificados/melleva.ml/privkey2.pem",
+        "cert": "/home/ubuntu/certificados/melleva.ml/cert2.pem"
+    },
+    "senales": {
+        "isDev": false,
+        "server": {
+            "port": 8088,
+            "secure": true,
+            "key": "/home/ubuntu/certificados/melleva.ml/privkey2.pem",
+            "cert": "/home/ubuntu/certificados/melleva.ml/cert2.pem"
+        },
+        "rooms": {
+            "maxClients": 0
+        },
+        "turnservers": [
+            {
+                "urls": ["turn:melleva.ml:8443"],
+                "secret": "",
+                "expiry": 86400
+            }
+        ]
+    }
+}

@@ -1,0 +1,75 @@
+<div style="margin-top: 0; display: none" ng-class="{mostrar:!preload}">
+    <div id="contenedor_mensajes" class='padding10' style="overflow-y: auto; border: 1px solid #eee;"
+        ng-style="{height:(windowHeight()-160)+'px'}" 
+        ng-if="chat.modo !== 'videollamada'">
+        <div id="mensajes">
+            <div ng-repeat='mensaje in chat.mensajes'
+                    ng-class="{mensajes_left:   chatsController.isMe(mensaje),
+                            mensajes_right: !chatsController.isMe(mensaje),
+                            'alert-info':    chatsController.isMe(mensaje),
+                            'alert-danger': !chatsController.isMe(mensaje)}">
+                <div ng-if='chatsController.isMensaje(mensaje)' style='margin-bottom: 10px'>
+                    <div>{{formatear_fecha(mensaje.fecha, 'Y-m-d H:i:s')}}:
+                        <a ng-href="/{{ chatsController.isMe(mensaje) ? 
+                                        applicationController.session.usuario:
+                                        chatUser.usuario }}">
+                            {{chatsController.getName(mensaje)}}
+                        </a>
+                    </div>
+                    <div>{{mensaje.mensaje}}</div>
+                </div>
+                <div ng-if="mensaje.tipo === 'videollamada' && mensaje.estado !== 'eliminado'" style='margin-bottom: 10px'>
+                    <div ng-if="mensaje.estado !== 'rechazado'">
+                        <div ng-if="chatsController.isMe(mensaje)">
+                            Haz hecho una solicitud de videollamada.
+                            <a style='color: blue' href='' ng-click="chatsController.rechazarVideoLlamada(mensaje)">
+                                Cancelar
+                            </a>
+                        </div>
+                        <div ng-if="!chatsController.isMe(mensaje)">
+                            Te han hecho una solicitud de videollamada.
+                            <a style='color: blue' href='' ng-click="chatsController.aceptarVideoLlamada(mensaje)">
+                                Aceptar
+                            </a>&nbsp;
+                            <a style='color: blue' href='' ng-click="chatsController.rechazarVideoLlamada(mensaje)">
+                                Rechazar
+                            </a>
+                        </div>
+                    </div>
+                    <div ng-if="mensaje.estado === 'rechazado'">
+                        Solicitud de videollamada cancelado/rechazado.
+                    </div>
+                </div>
+                <div ng-if="mensaje.tipo === 'llamada' && mensaje.estado !== 'eliminado'" style='margin-bottom: 10px'>
+                    <div ng-if="mensaje.estado !== 'rechazado'">
+                        <div ng-if="chatsController.isMe(mensaje)">
+                            Haz hecho una solicitud de llamada.
+                            <a style='color: blue' href='' ng-click="chatsController.rechazarLlamada(mensaje)">
+                                Cancelar
+                            </a>
+                        </div>
+                        <div ng-if="!chatsController.isMe(mensaje)">
+                            Te han hecho una solicitud de llamada.
+                            <a style='color: blue' href='' ng-click="chatsController.aceptarLlamada(mensaje)">
+                                Aceptar
+                            </a>&nbsp;
+                            <a style='color: blue' href='' ng-click="chatsController.rechazarLlamada(mensaje)">
+                                Rechazar
+                            </a>
+                        </div>
+                    </div>
+                    <div ng-if="mensaje.estado === 'rechazado'">
+                        Solicitud de videollamada cancelado/rechazado/terminado.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="padding10" style="padding-bottom: 0">
+        <div class="input-control text" style="width: 100%">
+            <input type="text" style="width: 100%; margin-bottom: 0; padding-bottom: 0" class='form-control' 
+                    ng-model='chatsController.mensaje' 
+                    ng-enter='chatsController.enviar(chatUser._id)'>
+        </div>
+    </div>
+</div>

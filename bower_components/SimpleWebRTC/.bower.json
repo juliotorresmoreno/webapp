@@ -1,0 +1,15 @@
+{
+  "name": "SimpleWebRTC",
+  "homepage": "https://github.com/andyet/SimpleWebRTC",
+  "version": "2.1.0",
+  "_release": "2.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.1.0",
+    "commit": "9a7bbf6b4f4eed7189c3bf618f22c017a99bba75"
+  },
+  "_source": "https://github.com/andyet/SimpleWebRTC.git",
+  "_target": "^2.1.0",
+  "_originalSource": "https://github.com/andyet/SimpleWebRTC.git",
+  "_direct": true
+}

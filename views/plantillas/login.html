@@ -1,0 +1,36 @@
+<div style="padding: 10px" ng-controller="authController">
+    <div class="grid">
+        <div class="row cells3">
+            <div class="cell"></div>
+            <div class="cell colspan1">
+                <div class="login-form padding20 block-shadow">
+                    <form>
+                        <h1 class="text-light">Inicia session</h1>
+                        <hr class="thin"/>
+                        <br />
+                        <div class="input-control password full-size" data-role="input">
+                            <label for="usuario">Usuario:</label>
+                            <input type="text" ng-model="authController.usuario" name="usuario">
+                            <button class="button helper-button clear"><span class="mif-cross"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="input-control password full-size" data-role="input">
+                            <label for="password">Contraseña:</label>
+                            <input type="password" ng-model="authController.password" name="password">
+                            <button class="button helper-button reveal"><span class="mif-looks"></span></button>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-actions">
+                            <button type="submit" class="button primary" ng-click='authController.login()'>
+                                Login
+                            </button>
+                            <button type="reset" class="button link">Resetear</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="cell"></div>
+            </div>
+        </div>
+    </div>

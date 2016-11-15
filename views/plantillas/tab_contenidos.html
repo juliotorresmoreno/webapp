@@ -1,0 +1,68 @@
+<div ng-if="['contenido_curso','editar_contenido_curso'].indexOf(applicationController.location)+1">
+    <div ng-if="['agregar_contenido_curso','editar_contenido_curso'].indexOf(route.location)+1">
+        <br/>
+        <div><label>Nombre:</label></div>
+        <div class="input-control text full-size">
+            <input type="text" 
+                class="form-control"  
+                ng-model='contenido.nombre' />
+        </div>
+
+        <div><label>Descripcion:</label></div>
+        <div class="input-control textarea full-size">
+            <textarea class="form-control"  
+                    ng-model='contenido.descripcion'></textarea>
+        </div>
+
+        <div><label>Video:</label></div>
+        <div class="input-control text">
+            <input type="text" 
+                class="form-control" 
+                ng-model='contenido.video' />
+        </div>
+
+        <label style="display: block" class="input-control checkbox">
+            <input type="checkbox" ng-model='contenido.publico'>
+            <span class="check"></span>
+            <span class="caption">Publico</span>
+        </label>
+        <br>
+
+        <div>
+            <span>
+                <button class="button primary" ng-click="cursosController.guardar_contenido('terminar')">
+                    Guardar y terminar
+                </button>
+                <button class="button primary" ng-click="cursosController.guardar_contenido('continuar')">
+                    Guardar y continuar
+                </button>
+                <button ng-if="contenido._id" class="button primary" ng-click="cursosController.continuar_contenido()">
+                    Continuar
+                </button>
+                <button class="button primary" ng-click="cursosController.cancelar_contenido()">
+                    Cancelar
+                </button>
+            </span>
+            <span ng-if="contenido._id" style="float: right">
+                <button class="button danger" ng-click="cursosController.eliminar_contenido()">
+                    Eliminar
+                </button>
+            </span>
+        </div>
+    </div>
+    <div ng-if="route.location === 'contenido_curso'">
+        <br>
+        <div class="listview">
+            <div style="color: black" ng-repeat="contenido in contenidos" class="list">
+                <img src="/icons/png/notepad.png" class="list-icon">
+                <a class="list-title" ng-href="/curso/{{route.parametros.id}}/editar/contenido/{{contenido._id}}">
+                    {{contenido.nombre}}
+                </a>
+                <div class="list-remark">{{ curso.creador }}</div>
+            </div>
+        </div>
+        <button class="button primary" ng-click="cursosController.agregarContenido()">
+            Agregar
+        </button>
+    </div>
+</div>

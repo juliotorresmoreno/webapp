@@ -1,0 +1,6 @@
+CACHE MANIFEST
+*
+
+NETWORK:
+js/application/*
+js/bootstrap.js

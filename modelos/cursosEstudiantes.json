@@ -1,0 +1,19 @@
+{
+    "tabla": "cursosEstudiantes",
+    "campos": [
+        {
+            "nombre": "usuario",
+            "requerido": true,
+            "foraneo": {
+                "tabla": "usuarios"
+            }
+        },
+        {
+            "nombre": "curso",
+            "requerido": true,
+            "foraneo": {
+                "tabla": "cursos"
+            }
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+<div ng-if="['actividades_curso','editar_actividad_curso'].indexOf(applicationController.location)+1">
+    <div ng-if="['agregar_actividad_curso','editar_actividad_curso'].indexOf(route.location)+1">
+        <br/>
+        <fieldset>
+            <legend>Actividad</legend>
+            <div><label>Nombre:</label></div>
+            <div class="input-control text full-size">
+                <input type="text" 
+                    class="form-control"  
+                    ng-model='actividad.nombre' />
+            </div>
+
+            <div><label>Descripcion:</label></div>
+            <div class="input-control textarea full-size">
+                <textarea class="form-control"  
+                        ng-model='actividad.descripcion'></textarea>
+            </div>
+
+            <label style="display: block" class="input-control checkbox">
+                <input type="checkbox" ng-model='actividad.publico'>
+                <span class="check"></span>
+                <span class="caption">Publico</span>
+            </label>
+            <br>
+
+            <div>
+                <span>
+                    <button class="button primary" ng-click="cursosController.guardar_actividad()">
+                        Guardar
+                    </button>
+                    <button class="button primary" ng-click="cursosController.continuar_actividad()">
+                        Continuar
+                    </button>
+                    <button class="button primary" ng-click="cursosController.cancelar_actividad()">
+                        Cancelar
+                    </button>
+                </span>
+                <span ng-if="actividad._id" style="float: right">
+                    <button class="button danger" ng-click="cursosController.eliminar_actividad()">
+                        Eliminar
+                    </button>
+                </span>
+            </div>
+        </fieldset>
+    </div>
+    <div ng-if="route.location === 'actividades_curso'">
+        <br>
+        <fieldset style="min-height: 150px">
+            <legend>Actividades</legend>
+            <div class="listview">
+                <div style="color: black" ng-repeat="actividad in actividades" class="list">
+                    <img src="/icons/png/notepad.png" class="list-icon">
+                    <a class="list-title" ng-href="/curso/{{route.parametros.id}}/editar/contenido/{{route.parametros.contenido}}/actividad/{{actividad._id}}">
+                        {{actividad.nombre}}
+                    </a>
+                    <div class="list-remark">{{ curso.creador }}</div>
+                </div>
+            </div>
+            <button class="button primary" ng-click="cursosController.agregarActividad()">
+                Agregar
+            </button>
+        </fieldset>
+    </div>
+</div>

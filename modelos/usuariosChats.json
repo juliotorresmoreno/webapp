@@ -1,0 +1,17 @@
+{
+    "tabla": "usuariosChats",
+    "campos": [
+        {
+            "nombre": "usuario",
+            "requerido": true,
+            "foraneo": {
+                "tabla": "usuarios"
+            }
+        },
+        {
+            "nombre": "chats",
+            "requerido": true,
+            "multiple": true
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+<div ng-controller='galeriasController' style="margin-top: 0; display: none" ng-class="{mostrar:!preload}">
+    <div class="panel" style="margin: 0 0 15px 0">
+        <div class="heading" style="padding-left: 10px">Renombrar galeria {{galerias.id}}.</div>
+        <div class="content padding10">
+            <div class="input-control text" style="width: 100%">
+                <input type="text" class="form-control" placeholder="Nombre" ng-model='galerias.nombre' />
+            </div>
+            <permisos data-id='guardar' leyenda='Guardar' 
+                      permiso='galerias.permiso'
+                      permisos='applicationController.permisos'
+                      callback='galeriasController.save'></permisos>&nbsp;
+            <button ng-if="galerias.modo == 'galeria'" class="button" ng-click='galeriasController.tomarFoto()'>
+                Tomar foto
+            </button>&nbsp;
+            <button ng-if="galerias.modo == 'galeria'" class="button" ng-click='galeriasController.subirFoto()'>
+                Examinar
+            </button>&nbsp;
+            <button ng-if="galerias.modo == 'tomarFoto'" class="button" ng-click='galeriasController.capturarFoto()'>
+                Capturar foto
+            </button>&nbsp;
+            <input style="display: none" type="file" id="files" onchange="$scopes.get('galeriasController').galeriasController.filesChange()" multiple >
+            <button ng-if="'salvarFotoTomada' == galerias.modo" class="button" ng-click='galeriasController.guardarFotoCapturada()'>
+                Guardar foto
+            </button>&nbsp;
+            <button ng-if="'subirFotos' == galerias.modo" class="button" ng-click='galeriasController.subirTodo()'>
+                Guardar foto(s)
+            </button>&nbsp;
+            <button ng-if="['tomarFoto', 'salvarFotoTomada'].indexOf(galerias.modo) >= 0" class="button" ng-click='galeriasController.cancelarTomarFoto()'>
+                Cancelar
+            </button>&nbsp;
+            <button ng-if="'subirFotos' == galerias.modo" class="button" ng-click='galeriasController.subirCancelar()'>
+                Cancelar
+            </button>
+            <div ng-if="galerias.files.length > 0" class="example" data-text="Fotos">
+                <div class="grid no-margin-top">
+                    <div ng-repeat='file in galerias.files' style="display: inline-block; margin: 0 20px 20px 0">
+                        <div class="image-container">
+                            <div class="frame">
+                                <img style="height: 200px; width: 200px" 
+                                     ng-src='{{file.src}}'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+    <div ng-if="galerias.fotos.length > 0 && galerias.modo == 'galeria'" class="example" data-text="Fotos">
+        <div class="grid no-margin-top">
+            <div ng-repeat='foto in galerias.fotos' style="display: inline-block; margin: 0 20px 20px 0; width: 200px">
+                <h5>{{foto.nombre}}</h5>
+                <a class="image-container" ng-href="{{applicationController.servidor}}/galerias/{{galerias.nombre}}/{{foto.nombre}}">
+                    <div class="frame">
+                        <img style="height: 200px; width: 200px" ng-src='{{foto.ruta}}'>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="galerias.modo == 'tomarFoto'" >
+        <video id="camara" autoplay controls style="width: 100%;"></video>
+    </div>
+    <div class="row" ng-hide="galerias.modo != 'salvarFotoTomada'" >
+        <canvas id="foto" ></canvas>
+    </div>
+</div>

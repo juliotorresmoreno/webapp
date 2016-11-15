@@ -1,0 +1,25 @@
+<div ng-controller='authController' class='container'>
+    <div class='row' style='margin-bottom: 100px'>
+        <div class='col-lg-4 col-center'>
+            <form class='form-signin' name='login'>
+                <h2 class='form-signin-heading'>Log in</h2>
+                <input type='text' class='form-control' placeholder='Nombre de usuario o Email' 
+                       ng-model='authController.usuario' name='usuario' />
+                <div class='error' ng-repeat='error in authController.errores.usuario'>
+                    <div>{{ error}}</div>
+                </div>
+
+                <input type='password' class='form-control' placeholder='Contraseña' 
+                       ng-model='authController.password' name='password' />
+                <div class='error' ng-repeat='error in authController.errores.password'>
+                    <div>{{ error}}</div>
+                </div>
+
+
+                <button class='btn btn-primary' type='submit' ng-click='authController.login()'>
+                    Inicia session
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

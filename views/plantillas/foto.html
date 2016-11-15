@@ -1,0 +1,27 @@
+<div ng-controller='galeriasController' style="margin-top: 0;">
+    <div id="referencia" class="panel" style="margin: 0 0 15px 0">
+        <div class="heading" style="padding-left: 10px">Renombrar foto {{galerias.id}}.</div>
+        <div class="content padding10">
+            <div class="input-control text" style="width: 100%" data-role="input">
+                <input type="text" class="form-control" placeholder="Nombre" ng-model='galerias.foto' />
+                <button class="button" ng-click='galeriasController.renombrarFoto()'>Renombrar</button>
+            </div>
+            <button class='button' ng-click='galeriasController.establecerFotoPerfil()'>
+                Establecer como foto de perfil
+            </button>&nbsp;
+            <button class='button' ng-click='galeriasController.eliminarFoto()'>Eliminar</button>
+        </div>
+    </div>
+    <div id="fotos" class="panel">
+        <div class="heading" style="text-align: center">
+            {{galerias.id}}
+        </div>
+        <div class="content">
+            <a class="absoluto" ng-style="galeriasController.navegacionStyle()" 
+               ng-href="{{applicationController.servidor}}/galerias/{{galerias.nombre}}/{{galerias.anterior}}" />
+            <a aria-hidden="true" style="float: left; z-index: 100; background: white" ng-href="{{applicationController.servidor}}/galerias/{{galerias.nombre}}/{{galerias.siguiente}}">
+                <img id="foto" resize="resize" ng-style="galeriasController.fotoStyle()" ng-src='{{galerias.presente}}' />
+            </a>
+        </div>
+    </div>
+</div>

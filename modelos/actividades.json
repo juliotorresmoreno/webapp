@@ -1,0 +1,36 @@
+{
+    "tabla": "actividades",
+    "campos": [
+        {
+            "nombre": "nombre",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": true,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "descripcion",
+            "requerido": true,
+            "tamano": {
+                "minimo": 0,
+                "maximo": 500
+            }
+        },
+        {
+            "nombre": "contenido",
+            "requerido": true,
+            "foraneo": { "tabla": "contenidos" }
+        },
+        {
+            "nombre": "publico",
+            "requerido": true
+        }
+    ]
+}

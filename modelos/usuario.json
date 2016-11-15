@@ -1,0 +1,40 @@
+{
+    "tabla": "usuarios",
+    "campos": [
+        {
+            "nombre": "nombres",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": false,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "apellidos",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": false,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "usuario",
+            "requerido": true,
+            "foraneo": {
+                "tabla": "usuarios"
+            }
+        }
+    ]
+}

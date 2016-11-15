@@ -1,0 +1,113 @@
+input {
+    margin-bottom: 10px
+}
+.col-center {
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+}
+.error {
+    margin-bottom: 10px;
+    color: red;
+}
+.menu {
+    width: 200px;
+    display: table-cell;
+    min-height: 300px;
+    vertical-align: top;
+}
+.menu .contenedor {
+    min-height: 300px
+}
+.contenido {
+    display: table-cell;
+    vertical-align: top;
+}
+.contenido .contenedor {
+    min-height: 300px;
+    margin: 0 10px 0 10px;
+}
+.publicidad {
+    width: 200px;
+    display: table-cell;
+    vertical-align: top;
+}
+.publicidad .contenedor {
+    min-height: 300px
+}
+.tabla {
+    width: 100%;
+    display: table;
+}
+.fila {
+    display: table-row;
+}
+.celda {
+    display: table-cell;
+}
+@media (max-width: 1200px) {
+    .publicidad {
+        display: none;
+    }
+}
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+    }
+}
+textarea {
+    resize: vertical
+}
+.row {
+    margin: 0;
+    padding: 0
+}
+.form-group {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.absoluto {
+    position: absolute;
+}
+.destinatario {
+    margin: 0 0 10px 0 !important;
+    padding: 0 !important;
+    width: 100%
+}
+
+.destinatario .TokensContainer {
+    height: 60px !important;
+}
+.destinatario .TokensContainer .Token {
+    height: 25px !important;
+}
+
+.messenger {
+
+}
+.mensajes_left {
+    text-align: left;
+}
+.mensajes_right {
+    text-align: right;
+}
+.menuitem {
+    width: 90px
+}
+.usuarioChat {
+    padding: 5px;
+    border: 5px;
+    color: white;
+}
+.item_perfil {
+    margin-bottom: 20px
+}
+.item_perfil .input-control {
+    width: 250px
+}
+.hide {
+    display: none
+}
+.mostrar {
+    display: block !important;
+}

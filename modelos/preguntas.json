@@ -1,0 +1,36 @@
+{
+    "tabla": "preguntas",
+    "campos": [
+        {
+            "nombre": "enunciado",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": true,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "descripcion",
+            "requerido": true,
+            "tamano": {
+                "minimo": 0,
+                "maximo": 500
+            }
+        },
+        {
+            "nombre": "respuestas",
+            "requerido": true
+        },
+        {
+            "nombre": "actividad",
+            "requerido": true,
+            "foraneo": { "tabla": "actividades" }
+        }
+    ]
+}

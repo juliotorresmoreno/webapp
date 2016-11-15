@@ -1,0 +1,114 @@
+<div ng-show="preguntaConfirmacion" class="window" style="width: 400px; position: fixed; margin-left: 50%; margin-top: 150px; transform: translateX(-50%); z-index: 100">
+    <div class="window-caption">
+        <span class="window-caption-icon"><span class="mif-windows"></span></span>
+        <span class="window-caption-title">Confirmacion</span>
+        <span class="btn-close" onclick="$('.window.confirmacion').css('display', 'none')"></span>
+    </div>
+    <div class="window-content" style="min-height: 150px; display: flex; flex-direction: column">
+        <div style="flex: 1;" class="margin10">
+            {{preguntaConfirmacion}}
+        </div>
+        <div style="margin-left: 50%; transform: translateX(-50%); width: 150px; display: flex">
+            <button style="flex:1" class="button primary" ng-click="responderConfirmacion(true)">Si</button>&nbsp;
+            <button style="flex:1" class="button primary" ng-click="responderConfirmacion(false)">No</button>
+        </div>
+    </div>
+</div>
+
+<div style="display: flex; flex-direction: column">
+    <div class="app-bar top darcula" data-role="appbar"> <!-- fixed-top -->
+        <a class="app-bar-element branding" href="/">Melleva</a>
+        <ul class="app-bar-menu">
+            <li ng-repeat="item in application.items">
+                <a href="" ng-show="item.mostrar()" class="dropdown-toggle">{{ item.titulo }}</a>
+                <ul class="d-menu" data-role="dropdown">
+                    <li ng-repeat="menu in item.items" ng-show="!menu.mostrar || menu.mostrar()">
+                        <a ng-click="menu.onclick !== undefined ? menu.onclick(): void(0)" 
+                            ng-href="{{menu.url}}" href="">{{menu.titulo}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="place-right">
+            <a class="app-bar-element" href='/cursos'>Cursos</a>
+            <a class="app-bar-element" href='/logout'>Salir</a>
+        </div>
+    </div>
+
+    <div class="page-content" style="flex: 1" ng-controller="chatsController"> <!-- style="margin-top: 55px;" -->
+        <div class="flex-grid no-responsive-future" style="height: 100%;">
+            <div class="row" style="height: 100%">
+                <div class="cell size-x200" style="height: 100%;">
+                    <div class="noitem" style="padding: 20px; border-right: 1px solid #eee">
+                        <a style='display: block; enlace' ng-href='{{applicationController.servidor}}/galerias'>
+                            <img style='width: 200px; height: 200px; enlace' 
+                                ng-src='{{applicationController.servidor}}/api/v1/galerias/{{applicationController.session.usuario}}/fotoPerfil?v={{applicationController.fotoPerfilReload}}' />
+                        </a>
+                        <div style="margin-top: 10px">
+                            <a ng-href='{{applicationController.servidor}}/{{applicationController.session.usuario}}'>
+                                <span ng-bind-template="{{applicationController.session.nombres}} {{applicationController.session.apellidos}}"></span>
+                            </a>
+                            <div>
+                                <a ng-href='{{applicationController.servidor}}/perfil/editar'>
+                                    Editar perfil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="sidebar2" style="border-top-width: 1px !important">
+                        <li>
+                            <a ng-href='{{applicationController.servidor}}/noticias'>
+                                <span class="mif-apps icon"></span>
+                                <span class="title">Noticias</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-href='{{applicationController.servidor}}/mensajes'>
+                                <span class="mif-vpn-publ icon"></span>
+                                <span class="title">Mensajes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-href='{{applicationController.servidor}}/amigos'>
+                                <span class="mif-drive-eta icon"></span>
+                                <span class="title">Amigos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-href='{{applicationController.servidor}}/solicitudes'>
+                                <span class="mif-drive-eta icon"></span>
+                                <span class="title">Solicitudes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cell auto-size padding20 ">
+                    <div style="min-height: 350px;" ng-if="preload !== true" 
+                        ng-html-compile='applicationController.contenidoHTML'></div>
+                    <div ng-if="preload === true" style="min-height: 350px;" >
+                        <div data-role="preloader" data-type="cycle" data-style="color"></div>
+                    </div>
+                </div>
+                <div ng-if="mostrarChat" class="cell bg-withe padding20 size-x200" style="height: 100%;">
+                    <a ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
+                        <div style="margin-bottom: 10px"
+                            class="content usuarioChat" 
+                            ng-class="{
+                                    'bg-green': chat.conectado && chat.estado !== 'mensaje', 
+                                    'bg-blue': !chat.conectado, 
+                                    'bg-yellow': chat.estado === 'mensaje'}">
+                            {{chat.nombres}} {{chat.apellidos}}
+                        </div>
+                    </a>
+                </div>
+                <div ng-include="chatEnbebido" ng-if="!mostrarChat" class="cell padding20 size-x400" style="height: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<footer class="footer padding20" style="height: 100px">
+    <p style="text-align: center">
+        Autor: julio torres
+    </p>
+</footer>-->

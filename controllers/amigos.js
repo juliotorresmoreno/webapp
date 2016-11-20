@@ -1,11 +1,8 @@
 module.exports = function (config) {
     var express = require('express');
     var router = express.Router();
-    var Usuarios = config.modelos.BaseModel(config);
-    Usuarios.setModelo(config.modelos.usuarios);
-
-    var Relaciones = config.modelos.BaseModel(config);
-    Relaciones.setModelo(config.modelos.amistades);
+    var Usuarios = config.modelos.BaseModel(config, config.modelos.usuarios);
+    var Relaciones = config.modelos.BaseModel(config, config.modelos.amistades);
 
     var campos = {
         nombres: 1, apellidos: 1, leyenda:1,

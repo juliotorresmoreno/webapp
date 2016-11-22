@@ -162,6 +162,10 @@ module.exports = function (config) {
     router.get('/:id/contenidos', function (req, res) {
         obtenerCurso(req.params.id, req.session.usuario, function (resultado) {
             var filtro = {curso:config.mongodb.ObjectID(req.params.id)};
+            if(resultado.success == false) {
+                res.json(resultado);
+                return;
+            }
             if(resultado.data.creador !== req.session.usuario) {
                 filtro.publico = true;
             }
@@ -184,7 +188,19 @@ module.exports = function (config) {
                     publico: req.body.publico === 'true'
                 }
                 var success = function (resultado) {
-                    res.json({success: true, mensaje: 'Agregado correctamente.'});
+                    if(resultado.insertedIds.length > 0) {
+                        res.json({
+                            success: true, 
+                            mensaje: 'Agregado correctamente.',
+                            id: resultado.insertedIds[0]
+                        });
+                    } else {
+                        res.json({
+                            success: false, 
+                            mensaje: 'Ocurrio un error inesperado',
+                            id: resultado.insertedIds[0]
+                        });
+                    }
                 };
                 var error = function (resultado) {
                     if (resultado.code === 1000 || resultado.code === 1001) {
@@ -330,51 +346,7 @@ module.exports = function (config) {
 
 
 
-    router.post('/:id/actividades/:contenido/actividad/:actividad/preguntas/crear', function (req, res, next) {
-        var cursoid = req.params.id;
-        var contenido = req.params.contenido;
-        var actividad = req.params.actividad;
-        var data = {
-            actividad: config.mongodb.ObjectID(actividad),
-            enunciado: req.body.enunciado,
-            descripcion: req.body.descripcion,
-            publico: req.body.publico === 'true',
-            tipo: req.body.tipo,
-            respuestas: []
-        };
-        var respuestas = typeof req.body.respuestas === 'string' ? 
-                         JSON.parse(req.body.respuestas):
-                         req.body.respuestas;
-        if(Array.isArray(respuestas)) {
-            for(var i = 0; i < respuestas.length; i++) {
-                if(respuestas[i].enunciado) {
-                    data.respuestas.push({
-                        enunciado:respuestas[i].enunciado,
-                        valor:parseInt(respuestas[i].valor)
-                    });
-                }
-            }
-        }
-        obtenerCurso(req.params.id, req.session.usuario, function (resultado) {
-            if(resultado.data.creador === req.session.usuario) {
-                var success = function (resultado) {
-                    res.json({success: true, mensaje: 'Agregado correctamente.'});
-                };
-                var error = function (resultado) {
-                    if (resultado.code === 1000 || resultado.code === 1001) {
-                        res.json(resultado.error);
-                    } else {
-                        res.end();
-                    }
-                };
-                Preguntas.add(data, success, error);
-            } else {
-                res.json({success: false, error: 'No eres el creador'});
-            }
-        }, false);
-    });
-
-    router.post('/:id/actividades/:contenido/actividad/:actividad/editar', function (req, res, next) {
+       router.post('/:id/actividades/:contenido/actividad/:actividad/preguntas/editar', function (req, res, next) {
         var cursoid = req.params.id;
         var contenido = req.params.contenido;
         var actividad = req.params.actividad;
@@ -429,6 +401,51 @@ module.exports = function (config) {
                 });
             }
         });
+    });
+
+    router.post('/:id/actividades/:contenido/actividad/:actividad/preguntas/crear', function (req, res, next) {
+        var cursoid = req.params.id;
+        var contenido = req.params.contenido;
+        var actividad = req.params.actividad;
+        var data = {
+            actividad: config.mongodb.ObjectID(actividad),
+            enunciado: req.body.enunciado,
+            descripcion: req.body.descripcion,
+            publico: req.body.publico === 'true',
+            tipo: req.body.tipo,
+            respuestas: []
+        };
+        var respuestas = typeof req.body.respuestas === 'string' ? 
+                         JSON.parse(req.body.respuestas):
+                         req.body.respuestas;
+        if(Array.isArray(respuestas)) {
+            for(var i = 0; i < respuestas.length; i++) {
+                if(respuestas[i].enunciado) {
+                    data.respuestas.push({
+                        id: config.md5(new Date() + respuestas[i].enunciado),
+                        enunciado:respuestas[i].enunciado,
+                        valor:parseInt(respuestas[i].valor)
+                    });
+                }
+            }
+        }
+        obtenerCurso(req.params.id, req.session.usuario, function (resultado) {
+            if(resultado.data.creador === req.session.usuario) {
+                var success = function (resultado) {
+                    res.json({success: true, mensaje: 'Agregado correctamente.'});
+                };
+                var error = function (resultado) {
+                    if (resultado.code === 1000 || resultado.code === 1001) {
+                        res.json(resultado.error);
+                    } else {
+                        res.end();
+                    }
+                };
+                Preguntas.add(data, success, error);
+            } else {
+                res.json({success: false, error: 'No eres el creador'});
+            }
+        }, false);
     });
 
     return router;

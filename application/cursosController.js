@@ -570,6 +570,7 @@
                         if(result.success) {
                             $scope.applicationController.mostrarInfo(result.mensaje);
                             $scopes.get('applicationController').contenido = {};
+                            $scope.route.parametros.contenido = result.id;
                             $scope.safeApply();
                             if(accion == 'continuar') {
                                 $scope.cursosController.continuar_contenido();
@@ -682,7 +683,7 @@
                     var url = servidor + '/api/v1/cursos/' + 
                               scope.route.parametros.id + '/actividades/' + 
                               scope.route.parametros.contenido + '/actividad/' +
-                              scope.route.parametros.actividad + 
+                              scope.route.parametros.actividad + '/preguntas' + 
                               (scope.pregunta._id ? '/editar': '/crear');
                     var pregunta = $scope.pregunta;
                     var respuestas = [];
@@ -717,6 +718,33 @@
                             break;
                         }
                     }
+                },
+                responder_actividad: () => {
+                    try {
+                        var respuestas = {};
+                        console.log('as');
+                        for(var i = 0; i < $scope.preguntas.length; i++) {
+                            let pregunta = $scope.preguntas[i];
+                            console.log(pregunta.tipo);
+                            switch(pregunta.tipo) {
+                                case "opcion":
+                                    respuestas[pregunta._id] = pregunta.respuesta
+                                break;
+                                case "multiple":
+                                    respuestas[pregunta._id] = [];
+                                    console.log(pregunta.pregunta);
+                                    for(var j = 0; j < pregunta.respuestas; j++) {
+                                        let respuesta = pregunta.respuestas[j];
+                                        console.log(respuesta);
+                                        if(respuesta.check) {
+                                            respuestas[pregunta._id].push(respuesta.id);
+                                        }
+                                    }
+                                break;
+                            }
+                        }
+                    } catch(e) {  }
+                    console.log(respuestas);
                 }
             };
             $scopes.add('cursosController', $scope);

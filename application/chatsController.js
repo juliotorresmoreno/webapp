@@ -94,8 +94,10 @@
             var $scope = $scopes.get('applicationController') || $scopes.get('chatsController');
             $scope.preload = false;
             if ($scope.route.location === 'conversacion' && $scope.chatUser !== undefined && data.usuarios.indexOf($scope.chatUser._id) >= 0) {
-                if ($scope.chat.mensajes === undefined)
-                    $scope.chat.mensajes = {};
+                if ($scope.chat === undefined)
+                    $scope.chat = {};
+                if ($scope.chat.mensajes === undefined || $scope.chat.mensajes.push === undefined)
+                    $scope.chat.mensajes = [];
                 $scope.chat.mensajes.push(data.data);
                 $scope.safeApply();
             } else if ($scope.chats) {

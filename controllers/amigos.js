@@ -4,6 +4,8 @@ module.exports = function (config) {
     var Usuarios = config.modelos.BaseModel(config, config.modelos.usuarios);
     var Relaciones = config.modelos.BaseModel(config, config.modelos.amistades);
 
+    //console.log(Usuarios.getColeccion());
+
     var campos = {
         nombres: 1, apellidos: 1, leyenda:1,
         usuario: 1,
@@ -110,9 +112,13 @@ module.exports = function (config) {
                                     }, req.error);
                                 }, req.error);
                             } else {
-                                Relaciones.update({_id: req.query.usuario}, {_id: req.query.usuario, relacion: 'confirmado'}, function () {
+                                Relaciones.setColeccion('amistades_' + req.session.usuario);
+                                Relaciones.update(req.query.usuario, {
+                                    _id: req.query.usuario, 
+                                    relacion: 'confirmado'
+                                }, function (resultado) {
                                     Relaciones.setColeccion('amistades_' + req.query.usuario);
-                                    Relaciones.update({_id: req.session.usuario}, {_id: req.session.usuario, relacion: 'confirmado'}, function () {
+                                    Relaciones.update(req.session.usuario, {_id: req.session.usuario, relacion: 'confirmado'}, function () {
                                         res.json({success: true, relacion: 'confirmado'});
                                     }, req.error);
                                 }, req.error);

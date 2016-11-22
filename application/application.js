@@ -323,7 +323,7 @@ if (application === undefined) {
                 }
                 if ($scope.conexion.WebSocket === undefined || $scope.conexion.WebSocket.readyState !== 1) {
                     $scope.conexion.servidorWss = servidorWss;
-                    $scope.conexion.WebSocket = new WebSocket(servidorWss, 'echo-protocol');
+                    $scope.conexion.WebSocket = new WebSocket(servidorWss); //, 'echo-protocol'
                     $scope.conexion.WebSocket.onopen = $scope.conexion.onopen;
                     $scope.conexion.WebSocket.onclose = $scope.conexion.onclose;
                     $scope.conexion.WebSocket.onmessage = $scope.conexion.onmessage;

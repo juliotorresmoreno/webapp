@@ -23,7 +23,8 @@ module.exports = {
         var amigos = require(global.dirname + '/controllersws/amigos')(config);
 
         var res = function (request) {
-            var connection = request.origin === 'file://' ? request.accept() : request.accept('echo-protocol', request.origin);
+            //var connection = request.origin === 'file://' ? request.accept() : request.accept('echo-protocol', request.origin);
+            var connection = request.accept();
             var params = getUrlParams(request.httpRequest.url);
             if (params.token) {
                 config.redisdb.get(params.token, function (err, data) {

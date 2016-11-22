@@ -62,14 +62,21 @@
                 <div>{{pregunta.enunciado}}</div>
                 <div ng-if="pregunta.tipo=='opcion'" ng-repeat="respuesta in pregunta.respuestas">
                     <label class="input-control radio">
-                        <input ng-model="pregunta.respuesta" value="{{$index}}" type="radio">
+                        <input ng-model="pregunta.respuesta" name="{{pregunta._id}}" value="{{respuesta.id}}" type="radio">
+                        <span class="check"></span>
+                        <span class="caption">{{respuesta.enunciado}}</span>
+                    </label>
+                </div>
+            
+                <div ng-if="pregunta.tipo=='multiple'" ng-repeat="respuesta in pregunta.respuestas">
+                    <label class="input-control checkbox">
+                        <input type="checkbox" ng-model="respuesta.check">
                         <span class="check"></span>
                         <span class="caption">{{respuesta.enunciado}}</span>
                     </label>
                 </div>
             </div>
-            <button class="button primary">Guardar y terminar</button>
-            <button class="button primary">Guardar</button>
+            <button class="button primary" ng-click="cursosController.responder_actividad()">Enviar</button>
         </div>
     </div>
     "{{route.location}}"

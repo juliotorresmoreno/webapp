@@ -720,31 +720,28 @@
                     }
                 },
                 responder_actividad: () => {
-                    try {
-                        var respuestas = {};
-                        console.log('as');
-                        for(var i = 0; i < $scope.preguntas.length; i++) {
-                            let pregunta = $scope.preguntas[i];
-                            console.log(pregunta.tipo);
-                            switch(pregunta.tipo) {
-                                case "opcion":
-                                    respuestas[pregunta._id] = pregunta.respuesta
-                                break;
-                                case "multiple":
-                                    respuestas[pregunta._id] = [];
-                                    console.log(pregunta.pregunta);
-                                    for(var j = 0; j < pregunta.respuestas; j++) {
-                                        let respuesta = pregunta.respuestas[j];
-                                        console.log(respuesta);
-                                        if(respuesta.check) {
-                                            respuestas[pregunta._id].push(respuesta.id);
-                                        }
+                    var respuestas = {};
+                    for(var i = 0; i < $scope.preguntas.length; i++) {
+                        let pregunta = $scope.preguntas[i];
+                        switch(pregunta.tipo) {
+                            case "opcion":
+                                respuestas[pregunta._id] = pregunta.respuesta
+                            break;
+                            case "multiple":
+                                respuestas[pregunta._id] = [];
+                                for(var j = 0; j < pregunta.respuestas.length; j++) {
+                                    let respuesta = pregunta.respuestas[j];
+                                    if(respuesta.check) {
+                                        respuestas[pregunta._id].push(respuesta.id);
                                     }
-                                break;
-                            }
+                                }
+                            break;
                         }
-                    } catch(e) {  }
-                    console.log(respuestas);
+                    }
+                    var url = servidor + '/api/v1/cursos/' + $scope.route.parametros.actividad + '/responder';
+                    $.get(url).success(function (result) {
+                        console.log(result);
+                    });
                 }
             };
             $scopes.add('cursosController', $scope);

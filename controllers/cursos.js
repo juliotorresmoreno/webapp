@@ -365,6 +365,7 @@ module.exports = function (config) {
             for(var i = 0; i < respuestas.length; i++) {
                 if(respuestas[i].enunciado) {
                     data.respuestas.push({
+                        id: respuestas[i].id || config.md5(new Date() + respuestas[i].enunciado),
                         enunciado:respuestas[i].enunciado,
                         valor:parseInt(respuestas[i].valor)
                     });

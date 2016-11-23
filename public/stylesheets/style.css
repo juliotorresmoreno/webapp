@@ -140,3 +140,7 @@ input[type="text"]:focus, input[type="password"]:focus {
     background-size: cover;
     -o-background-size: cover;
 }
+
+.redondeado {
+    border-radius: 10px
+}

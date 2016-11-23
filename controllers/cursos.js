@@ -468,5 +468,47 @@ module.exports = function (config) {
         }, req.error);
     });
 
+    var url = "/:id/actividades/:contenido/actividad/:actividad/preguntas/responder";
+    router.post(url, function (req, res, next) {
+        var pregunta = req.body.pregunta;
+        var respuestasU = req.body.data;
+        var cursoid = req.params.id;
+        var contenido = req.params.contenido;
+        var actividad = req.params.actividad;
+        if(typeof respuestasU !== 'undefined') {
+            if(typeof respuestasU == "string") {
+                respuestasU = JSON.parse(respuestasU);
+            }
+            Preguntas.find({actividad:config.mongodb.ObjectID(actividad)}, (error, result) => {
+                if(!error) {
+                    result.toArray(function(error, data) {
+                        if(data.length > 0) {
+                            var respuestas = [];
+                            for(let i = 0; i < data.length; i++) {
+                                let pregunta = data[i];
+                                if(typeof respuestasU[pregunta._id] !== undefined) {
+                                    console.log(pregunta._id);
+                                }
+                            }
+                            res.json(data);
+                        } else {
+                            res.json({success: false, mensaje: 'No hay preguntas en la actividad'})
+                        }
+                    });
+                    return;
+                }
+                res.json({
+                    success: false,
+                    mensaje: 'Ocurrio un error inesperado'
+                })
+            });
+        } else {
+            res.json({
+                success: false,
+                mensaje: 'Peticion mal formada'
+            })
+        }
+    });
+
     return router;
 };

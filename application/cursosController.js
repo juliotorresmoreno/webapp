@@ -738,6 +738,7 @@
                     }
                 },
                 responder_actividad() {
+                    var scope = $scopes.get('applicationController');
                     var respuestas = {};
                     for(var i = 0; i < $scope.preguntas.length; i++) {
                         let pregunta = $scope.preguntas[i];
@@ -756,13 +757,11 @@
                             break;
                         }
                     }
-                    console.log("asd");
                     var url = servidor + '/api/v1/cursos/' + 
                               scope.route.parametros.id + '/actividades/' + 
                               scope.route.parametros.contenido + '/actividad/' +
-                              scope.route.parametros.actividad + '/preguntas/' +
-                              scope.route.parametros.pregunta + '/responder';
-                    $.get(url).success(function (result) {
+                              scope.route.parametros.actividad + '/preguntas/responder';
+                    $.post(url, {data:JSON.stringify(respuestas)}).success(function (result) {
                         console.log(result);
                     });
                 }

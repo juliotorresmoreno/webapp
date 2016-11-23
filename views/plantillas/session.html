@@ -99,7 +99,9 @@
                     </a>
                 </div>
                 <div style="padding: 20px 20px 0 0" class="listview cell bg-withe size-x200">
-                    <a style="padding: 8px 8px 4px 8px !important; height: auto; color: #000" class="list" ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
+                    <a style="height: auto; color: #000" class="list" ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
+                        <img ng-if="chat.conectado" src="/vendor/148705-essential-collection/png/user.png" class="list-icon">
+                        <img ng-if="!chat.conectado" src="/vendor/148705-essential-collection/png/user-1.png" class="list-icon">
                         <span class="list-listing">
                             {{chat.nombres}} {{chat.apellidos}}
                             <div>{{ chat.conectado ? 'Disponible': 'No disponible' }}</div>

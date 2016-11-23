@@ -737,7 +737,7 @@
                         }
                     }
                 },
-                responder_actividad: () => {
+                responder_actividad() {
                     var respuestas = {};
                     for(var i = 0; i < $scope.preguntas.length; i++) {
                         let pregunta = $scope.preguntas[i];
@@ -756,7 +756,12 @@
                             break;
                         }
                     }
-                    var url = servidor + '/api/v1/cursos/' + $scope.route.parametros.actividad + '/responder';
+                    console.log("asd");
+                    var url = servidor + '/api/v1/cursos/' + 
+                              scope.route.parametros.id + '/actividades/' + 
+                              scope.route.parametros.contenido + '/actividad/' +
+                              scope.route.parametros.actividad + '/preguntas/' +
+                              scope.route.parametros.pregunta + '/responder';
                     $.get(url).success(function (result) {
                         console.log(result);
                     });

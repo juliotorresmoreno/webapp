@@ -34,7 +34,9 @@
             $scope.contenidos = respuesta.data;
             if(respuesta.data.length === 0) {
                 $scope.contenido = {};
-                $scope.route.location = 'agregar_contenido_curso';
+                if($scope.route.location === 'contenido_curso') {
+                    $scope.route.location = 'agregar_contenido_curso';
+                }
             }
             if(typeof callback === 'function') {
                 callback($scope, respuesta);
@@ -528,6 +530,7 @@
                                 $scope.curso = {};
                                 $scope.safeApply();
                             }
+                            redirigir('/curso/' + result.cursoid + '/editar');
                             $scope.applicationController.mostrarInfo(result.mensaje);
                         } else {
                             $scope.applicationController.mostrarErrores(result);
@@ -678,7 +681,7 @@
                         {enunciado:'',valor:'0'}
                     ];
                 },
-                guardar_pregunta: () => {
+                guardar_pregunta() {
                     var scope = $scopes.get('applicationController');
                     var url = servidor + '/api/v1/cursos/' + 
                               scope.route.parametros.id + '/actividades/' + 
@@ -703,7 +706,22 @@
                         }
                     });
                 },
-                cancelar_pregunta: () => {
+                eliminar_pregunta() {
+                    var scope = $scopes.get('applicationController');
+                    var url = servidor + '/api/v1/cursos/' + 
+                              scope.route.parametros.id + '/actividades/' + 
+                              scope.route.parametros.contenido + '/actividad/' +
+                              scope.route.parametros.actividad + '/preguntas/eliminar';
+                    $.post(url, {pregunta: scope.route.parametros.pregunta}).success(function (respuesta) {
+                        if(respuesta.success) {
+                            $scope.applicationController.mostrarInfo(respuesta.mensaje);
+                            $scope.cursosController.cancelar_pregunta();
+                        } else {
+                            $scope.applicationController.mostrarErrores(respuesta);
+                        }
+                    });
+                },
+                cancelar_pregunta() {
                     redirigir('/curso/' + $scope.curso._id + '/editar/contenido/' + $scope.route.parametros.contenido + '/actividad/' + $scope.route.parametros.actividad + '/preguntas');
                     $scope.route.location = 'preguntas_actividad_curso';
                 },

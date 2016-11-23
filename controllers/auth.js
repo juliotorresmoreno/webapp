@@ -2,6 +2,7 @@ module.exports = function (config) {
     var router = config.express.Router();
     var params = config;
     var Usuarios = config.modelos.BaseModel(params, config.modelos.usuarios);
+    var nodemailer = require('nodemailer');
     var login = function (req, res, next, session) {
         var token = config.mongodb.ObjectID() + config.mongodb.ObjectID();
         session.caduca = (new Date()).setHours(2);
@@ -10,6 +11,25 @@ module.exports = function (config) {
         session.token = token;
         res.json({success: true, session: session});
     };
+    var validarEmail = function(email, callback) {
+        var transporter = nodemailer.createTransport();
+        var mailOptions = {
+            from: '"Postmaster ?" <postmaster@melleva.ml>',
+            to: email,
+            subject: 'Cordial saludo',
+            text: 'Hello world ?',
+            html: '<b>Hello world ?</b>'
+        };
+        transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error);
+                return;
+            }
+        });
+    };
+    router.get('/validar', function (req, res, next) {
+        res.render('interno/correo');
+    });
     router.post('/registrar', function (req, res, next) {
         var usuario = {
             _id: req.body.usuario,

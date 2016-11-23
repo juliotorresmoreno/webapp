@@ -1,0 +1,15 @@
+
+.navbar-cute{
+    background-color: #222;
+    border-color: transparent;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.navbar-cute a {
+    color: #fff !important;
+}
+.navbar-cute a:hover {
+    color: yellow !important;
+}

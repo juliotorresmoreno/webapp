@@ -12,8 +12,9 @@
         enum: 'El valor del campo {campo} no es valido.',
         foraneo: 'El {campo} {valor} no existe.'
     };
-    var alfabeto = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
-    var numeros = '0123456789';
+    //var alfabeto = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+    var alfabeto = /[A-Za-zñÑáéíóúÁÉÍÓÚ]*/
+    var numeros = /[0-9]/;
     var especiales = '_-';
     function init(validator, md5) {
         validador = function (modelo, dato, config) {
@@ -91,10 +92,19 @@
                     if (campo.caracteres) {
                         for (var j = 0; j < valor.length; j++) {
                             caracter = valor.substr(j, 1);
-                            permitido = campo.caracteres.alfabeto ? alfabeto.indexOf(caracter) != -1 : false;
-                            permitido = campo.caracteres.numeros && !permitido ? numeros.indexOf(caracter) != -1 : permitido;
-                            permitido = campo.caracteres.espacios && !permitido ? caracter == ' ' : permitido;
-                            permitido = campo.caracteres.especiales && !permitido ? especiales.indexOf(caracter) != -1 : permitido;
+                            //permitido = campo.caracteres.alfabeto ? alfabeto.indexOf(caracter) != -1 : false;
+                            permitido = campo.caracteres.alfabeto ? 
+                                        alfabeto.test(caracter):
+                                        false;
+                            permitido = campo.caracteres.numeros && !permitido ? 
+                                        numeros.test(caracter):
+                                        permitido;
+                            permitido = campo.caracteres.espacios && !permitido ? 
+                                        caracter == ' ': 
+                                        permitido;
+                            permitido = campo.caracteres.especiales && !permitido ? 
+                                        especiales.indexOf(caracter) != -1: 
+                                        permitido;
                             if (!permitido) {
                                 resultado[campo.nombre].push(errores.caracteres.replace('{campo}', campo.nombre));
                                 break;

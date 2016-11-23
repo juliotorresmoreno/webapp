@@ -7,23 +7,23 @@
         "puerto": "27017"
     },
     "enviroment": "desarrollo",
-    "servidor": "melleva.ml",
+    "servidor": "localhost",
     "limite": 20,
     "mensajes": { "limite": 30 },
     "pagina": 1,
     "puertos": { "http": 80, "https": 443 },
     "numCPUs": 1,
     "certificados": {
-        "key": "/home/ubuntu/certificados/melleva.ml/privkey2.pem",
-        "cert": "/home/ubuntu/certificados/melleva.ml/cert2.pem"
-    },
+        "key": "/home/desarrollo/certificados/privkey2.pem",
+        "cert": "/home/desarrollo/certificados/cert2.pem"
+    }, 
     "senales": {
         "isDev": false,
         "server": {
             "port": 8088,
             "secure": true,
-            "key": "/home/ubuntu/certificados/melleva.ml/privkey2.pem",
-            "cert": "/home/ubuntu/certificados/melleva.ml/cert2.pem"
+            "key": "/home/desarrollo/certificados/privkey2.pem",
+            "cert": "/home/desarrollo/certificados/cert2.pem"
         },
         "rooms": {
             "maxClients": 0

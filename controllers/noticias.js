@@ -108,7 +108,7 @@ module.exports = function (config, api) {
             usuario: req.session,
             comentario: req.body.comentario,
             permiso: req.body.permiso,
-            fecha: new Date(),
+            fecha: Date.now(),
             contenedor: obtenerMes(new Date()),
             likes: [],
             comentarios: [],
@@ -130,9 +130,13 @@ module.exports = function (config, api) {
                         resultado.comentarios = [];
                     }
                     resultado.comentarios.push({
-                        usuario: req.session,
+                        usuario: {
+                            nombres: req.session.nombres,
+                            apellidos: req.session.apellidos,
+                            usuario: req.session.usuario
+                        },
                         comentario: req.body.comentario,
-                        fecha: new Date()
+                        fecha: Date.now()
                     });
                     Noticias.update(filtro, {comentarios:resultado.comentarios}, function() {
                         res.json({success:true,comentarios:resultado.comentarios});
@@ -165,7 +169,11 @@ module.exports = function (config, api) {
                     if(encontrado >= 0) {
                         resultado.likes.splice(encontrado);
                     } else {
-                        resultado.likes.push(req.session);
+                        resultado.likes.push({
+                            nombres: req.session.nombres,
+                            apellidos: req.session.apellidos,
+                            usuario: req.session.usuario
+                        });
                     }
                     Noticias.update(filtro, {likes:resultado.likes}, function() {
                         res.json({success:true,likes:resultado.likes});

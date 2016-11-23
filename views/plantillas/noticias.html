@@ -9,6 +9,10 @@
                       permisos='applicationController.permisos'
                       callback='noticiasController.publicar'></permisos>
         </div>
+        <div ng-if="route.parametros.usuario && noticias.noticias.length == 0" 
+             style="margin-bottom: 10px">
+            Ups parece que este usuario no ha publicado nada.
+        </div>
 
         <div class="listview-outlook" >
             <div class="list" ng-class="{active:false}" ng-repeat="noticia in noticias.noticias| orderBy:'-fecha'" ng-if="noticia.estado != 'eliminado'">

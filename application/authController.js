@@ -40,6 +40,7 @@ routers.add({
     ]
 });
 
+
 application.controller('authController', ['$scope', 
     function ($scope) {
         $scope.authController = {

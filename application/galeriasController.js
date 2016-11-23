@@ -139,9 +139,8 @@
         function ($scope) {
             $scope.galeriasController = {
                 errores: {success: true},
-                estilos: {
-                },
-                navegacionStyle: function () {
+                estilos: {},
+                navegacionStyle() {
                     var oFoto = $('#foto');
                     return {
                         'float': 'left',
@@ -156,7 +155,7 @@
                 nombre: '',
                 foto: '',
                 files: [],
-                establecerFotoPerfil: function () {
+                establecerFotoPerfil() {
                     $.post(servidor + '/api/v1/galerias/' + $scope.galerias.nombre + '/establecerFotoPerfil', {
                         id: $scope.galerias.id
                     }).done(function (resultado) {
@@ -167,7 +166,7 @@
                         $scope.safeApply();
                     });
                 },
-                eliminarFoto: function () {
+                eliminarFoto() {
                     if ($scope.galerias.foto && $scope.galerias.foto.length >= 3) {
                         $.post(servidor + '/api/v1/galerias/' + $scope.galerias.nombre + '/eliminarFoto', {
                             id: $scope.galerias.id
@@ -183,7 +182,7 @@
                         });
                     }
                 },
-                save: function (permiso) {
+                save(permiso) {
                     if ($scope.galerias.nombre && $scope.galerias.nombre.length > 3) {
                         $.post(servidor + '/api/v1/galerias', {
                             id: $scope.galerias.id,
@@ -210,7 +209,7 @@
                         });
                     }
                 },
-                renombrarFoto: function () {
+                renombrarFoto() {
                     if ($scope.galerias.foto && $scope.galerias.foto.length >= 3) {
                         $.post(servidor + '/api/v1/galerias/' + $scope.galerias.nombre + '/renombrarFoto', {
                             id: $scope.galerias.id,
@@ -224,7 +223,7 @@
                         });
                     }
                 },
-                filesChange: function () {
+                filesChange() {
                     var files = $('#files');
                     $scope.galerias.files = [];
                     if (files[0].files && files[0].files.length > 0) {
@@ -244,7 +243,7 @@
                         $scope.safeApply();
                     }
                 },
-                tomarFoto: function () {
+                tomarFoto() {
                     $scope.galerias.modo = 'tomarFoto';
                     navigator.getUserMedia(
                             {audio: false, video: true},
@@ -259,7 +258,7 @@
                         });
                     });
                 },
-                cancelarTomarFoto: function () {
+                cancelarTomarFoto() {
                     if (datosVideo.StreamVideo) {
                         datosVideo.StreamVideo.stop();
                         window.URL.revokeObjectURL(datosVideo.url);
@@ -267,7 +266,7 @@
                     $scope.galerias.modo = 'galeria';
                     $scope.safeApply();
                 },
-                capturarFoto: function () {
+                capturarFoto() {
                     var oCamara, oFoto, oContexto, w, h;
                     oCamara = $('#camara');
                     oFoto = $('#foto');
@@ -280,8 +279,9 @@
                     $scope.galerias.modo = 'salvarFotoTomada';
                     $scope.safeApply();
                 },
-                guardarFotoCapturada: function () {
+                guardarFotoCapturada () {
                     var oFoto = jQuery('#foto');
+                    $scope.applicationController.mostrarInfo("Subiendo imagen");
                     oFoto[0].toBlob(function (blob, type) {
                         var form = new FormData();
                         form.append('file', blob);
@@ -304,12 +304,12 @@
                         });
                     });
                 },
-                subirFoto: function () {
-                    var files = $('#files');
-                    files.trigger('click');
+                subirFoto() {
+                    $('#files').trigger('click');
                 },
-                subirTodo: function () {
+                subirTodo() {
                     var files = $('#files');
+                    $scope.applicationController.mostrarInfo("Subiendo imagen");
                     var subirFoto = function (file) {
                         var form = new FormData();
                         form.append('file', file);
@@ -340,13 +340,13 @@
                         if (files[0].files[i].estado !== 1)
                             subirFoto(files[0].files[i]);
                 },
-                subirCancelar: function () {
+                subirCancelar() {
                     delete $scope.galerias.files;
                     $scope.galerias.files = [];
                     $scope.galerias.modo = 'galeria';
                 },
                 navegacion: verFoto,
-                urlImagen: (galeria) => {
+                urlImagen(galeria) {
                     var usuario = $scope.route.parametros || $scope.applicationController.session.usuario;
                     var servidor = $scope.applicationController.servidor;
                     return servidor + '/api/v1/galerias/' + usuario + '/' + galeria.nombre + '/@preview';

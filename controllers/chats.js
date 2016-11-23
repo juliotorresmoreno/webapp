@@ -139,7 +139,7 @@ module.exports = function (config) {
         var _mensaje = {
             mensaje: mensaje,
             usuario: usuario,
-            fecha: new Date()
+            fecha: Date.now()
         };
         var id = 'chat' + config.mongodb.ObjectID();
         _usuarios.push(usuario);

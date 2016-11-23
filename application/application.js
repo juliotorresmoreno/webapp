@@ -269,7 +269,7 @@ if (application === undefined) {
             };
             $scope.application = {items: {}};
             $scope.formatear_fecha = function (fecha, formato) {
-                if(typeof fecha === 'string') {
+                if(typeof fecha === 'string' && /^[0-9]{13,14}$/.test(fecha)) {
                     fecha = new Date(parseInt(fecha));
                 } else {
                     fecha = new Date(fecha);
@@ -459,6 +459,11 @@ if (application === undefined) {
                     var parametros = {};
                     $scope.preload = true;
                     route.URI = route.params ? route.params : route.api;
+                    if (datosVideo.StreamVideo) {
+                        datosVideo.StreamVideo.stop();
+                        window.URL.revokeObjectURL(datosVideo.url);
+                        datosVideo = {};
+                    }
                     if (params) {
                         var temp = params.split('&');
                         for (var i = 0; i < temp.length; i++) {

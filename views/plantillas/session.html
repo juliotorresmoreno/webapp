@@ -16,8 +16,8 @@
 </div>
 
 <div style="display: flex; flex-direction: column">
-    <div class="app-bar top darcula" data-role="appbar"> <!-- fixed-top -->
-        <a class="app-bar-element branding" href="/">Melleva</a>
+    <div class="app-bar top navbar-cute" data-role="appbar"> <!-- fixed-top -->
+        <a class="app-bar-element branding" href="/">Ecate</a>
         <ul class="app-bar-menu">
             <li ng-repeat="item in application.items">
                 <a href="" ng-show="item.mostrar()" class="dropdown-toggle">{{ item.titulo }}</a>
@@ -65,7 +65,7 @@
                         <li>
                             <a ng-href='{{applicationController.servidor}}/mensajes'>
                                 <span class="mif-vpn-publ icon"></span>
-                                <span class="title">Mensajes</span>
+                                <span class="title">Correo</span>
                             </a>
                         </li>
                         <li>
@@ -89,16 +89,21 @@
                         <div data-role="preloader" data-type="cycle" data-style="color"></div>
                     </div>
                 </div>
-                <div ng-if="mostrarChat" class="cell bg-withe padding20 size-x200" style="height: 100%;">
+                <div ng-if="0 && mostrarChat" class="cell bg-withe padding20 size-x200" style="height: 100%;">
                     <a ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
-                        <div style="margin-bottom: 10px"
-                            class="content usuarioChat" 
-                            ng-class="{
-                                    'bg-green': chat.conectado && chat.estado !== 'mensaje', 
-                                    'bg-blue': !chat.conectado, 
-                                    'bg-yellow': chat.estado === 'mensaje'}">
+                        <div style="margin-bottom: 10px" class="content usuarioChat" 
+                            ng-class="{'bg-yellow': chat.estado === 'mensaje'}">
                             {{chat.nombres}} {{chat.apellidos}}
                         </div>
+                        <div>{{ chat.conectado ? 'Disponible': 'No disponible' }}</div>
+                    </a>
+                </div>
+                <div style="padding: 20px 20px 0 0" class="listview cell bg-withe size-x200">
+                    <a style="padding: 8px 8px 4px 8px !important; height: auto; color: #000" class="list" ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
+                        <span class="list-listing">
+                            {{chat.nombres}} {{chat.apellidos}}
+                            <div>{{ chat.conectado ? 'Disponible': 'No disponible' }}</div>
+                        </span>
                     </a>
                 </div>
                 <div ng-include="chatEnbebido" ng-if="!mostrarChat" class="cell padding20 size-x400" style="height: 100%;"></div>

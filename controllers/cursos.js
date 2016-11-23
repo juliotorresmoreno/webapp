@@ -7,7 +7,7 @@ module.exports = function (config) {
     var Actividades = config.modelos.BaseModel(config, config.modelos.actividades);
     var Preguntas = config.modelos.BaseModel(config, config.modelos.preguntas);
     var CursosEstudiantes = config.modelos.BaseModel(config, config.modelos.cursosEstudiantes);
-
+    
     router.post('/crear', function (req, res) {
         var data = {
             nombre: req.body.nombre,
@@ -18,7 +18,18 @@ module.exports = function (config) {
             permiso: req.body.permiso
         };
         var success = function (resultado) {
-            res.json({success: true, mensaje: 'Agregado correctamente.'});
+            if(resultado.insertedCount == 1) {
+                res.json({
+                    success: true, 
+                    mensaje: 'Agregado correctamente.',
+                    cursoid: resultado.insertedIds[0]
+                });
+            } else {
+                res.json({
+                    success: false, 
+                    mensaje: "Ocurrio un error inesperado"
+                });
+            }
         };
         var error = function (resultado) {
             if (resultado.code === 1001) {
@@ -447,6 +458,14 @@ module.exports = function (config) {
                 res.json({success: false, error: 'No eres el creador'});
             }
         }, false);
+    });
+
+    var url = '/:id/actividades/:contenido/actividad/:actividad/preguntas/eliminar';
+    router.post(url, function (req, res, next) {
+        var pregunta = req.body.pregunta;
+        Preguntas.delete({_id: config.mongodb.ObjectID(pregunta)}, function () {
+            res.json({success: true, mensaje: 'Pregunta eliminada correctamente.'});
+        }, req.error);
     });
 
     return router;

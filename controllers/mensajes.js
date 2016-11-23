@@ -8,7 +8,7 @@ module.exports = function (config) {
             destinatarios: JSON.parse(req.body.destinatarios),
             asunto: req.body.asunto,
             contenido: req.body.contenido,
-            fecha: new Date()
+            fecha: Date.now()
         };
         Mensajes.setColeccion('mensajes_' + req.session.usuario);
         Mensajes.add(mensaje, function () {

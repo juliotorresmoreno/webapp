@@ -156,13 +156,15 @@
                 foto: '',
                 files: [],
                 establecerFotoPerfil() {
+                    $scope = $scopes.get('applicationController');
                     $.post(servidor + '/api/v1/galerias/' + $scope.galerias.nombre + '/establecerFotoPerfil', {
                         id: $scope.galerias.id
                     }).done(function (resultado) {
-                        if (resultado.success)
+                        if (resultado.success) {
                             $scope.applicationController.fotoPerfilReload += 1;
-                        else
+                        } else {
                             $scope.applicationController.mostrarErrores(resultado);
+                        }
                         $scope.safeApply();
                     });
                 },
@@ -176,8 +178,10 @@
                                 $scope.galerias.fotos = resultado.fotos;
                                 $scope.galerias.modo = 'galeria';
                                 $scope.applicationController.mostrarInfo('Eliminado correctamente');
-                            } else
+                                redirigir('/galerias/' + $scope.route.parametros.galeria);
+                            } else {
                                 $scope.applicationController.mostrarErrores(resultado);
+                            }
                             $scope.safeApply();
                         });
                     }

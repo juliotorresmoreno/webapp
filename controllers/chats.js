@@ -73,14 +73,16 @@ module.exports = function (config) {
             var conexiones = params.getConexiones();
             var nconectados = [];
             var request = params.mongodb.ObjectID().toString();
-            for (var i = 0; i < resultado.length; i++) {
-                if (conexiones.hasOwnProperty(resultado[i].usuario) && conexiones[resultado[i].usuario].hasOwnProperty('conexiones')) {
+            for (var i = 0; i < resultado.length; i++) { 
+                if (conexiones.hasOwnProperty(resultado[i].usuario) && 
+                    conexiones[resultado[i].usuario].hasOwnProperty('conexiones')) {
+                    let wusuario = conexiones[resultado[i].usuario];
                     resultado[i].conectado = true;
                     conectados.push(resultado[i]);
-                    for (var j = 0; j < conexiones[resultado[i].usuario].conexiones.length; j++) {
-                        conexiones[resultado[i].usuario].conexiones[j].enviar({
+                    for (var j = 0; j < wusuario.conexiones.length; j++) {
+                        wusuario.conexiones[j].enviar({
                             success: true,
-                            peticion: params.conectado ? 'amigoConectado' : 'amigoDesconectado',
+                            peticion: 'amigoConectado',
                             usuario: usuario
                         });
                     }
@@ -149,7 +151,6 @@ module.exports = function (config) {
         var registrarMensaje = function (usuario, registrar) {
             usuariosChats.find({usuario: usuario}, function (err, data) {
                 data.toArray(function (error, dato) {
-                    chats.setColeccion(id);
                     if (dato.length === 0) {
                         var userChat = {
                             _id: usuario,
@@ -178,10 +179,11 @@ module.exports = function (config) {
                         }
                         if (encontrado === false) {
                             dato.chats.push({id: id, usuarios: _usuarios});
-                            usuariosChats.update(id, dato);
+                            usuariosChats.update(usuario, dato);
                         }
                     }
                     if (registrar) {
+                        chats.setColeccion(id);
                         chats.add(_mensaje);
                     }
                 });

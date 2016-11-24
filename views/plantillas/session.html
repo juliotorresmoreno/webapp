@@ -30,6 +30,9 @@
             </li>
         </ul>
         <div class="place-right">
+            <span class="menu-items-small">
+                <a class="app-bar-element" href='/chats'>Chats</a>
+            </span>
             <a class="app-bar-element" href='/cursos'>Cursos</a>
             <a class="app-bar-element" href='/logout'>Salir</a>
         </div>
@@ -38,7 +41,7 @@
     <div class="page-content" style="flex: 1" ng-controller="chatsController"> <!-- style="margin-top: 55px;" -->
         <div class="flex-grid no-responsive-future" style="height: 100%;">
             <div class="row" style="height: 100%">
-                <div class="cell size-x200" style="height: 100%;">
+                <div class="cell size-x200 menu-lateral" style="height: 100%;">
                     <div class="noitem" style="padding: 20px; border-right: 1px solid #eee">
                         <a style='display: block; enlace' ng-href='{{applicationController.servidor}}/galerias'>
                             <img style='width: 200px; height: 200px; enlace' 
@@ -89,16 +92,8 @@
                         <div data-role="preloader" data-type="cycle" data-style="color"></div>
                     </div>
                 </div>
-                <div ng-if="0 && mostrarChat" class="cell bg-withe padding20 size-x200" style="height: 100%;">
-                    <a ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
-                        <div style="margin-bottom: 10px" class="content usuarioChat" 
-                            ng-class="{'bg-yellow': chat.estado === 'mensaje'}">
-                            {{chat.nombres}} {{chat.apellidos}}
-                        </div>
-                        <div>{{ chat.conectado ? 'Disponible': 'No disponible' }}</div>
-                    </a>
-                </div>
-                <div ng-if="mostrarChat" style="padding: 20px 20px 0 0" class="listview cell bg-withe size-x200">
+                <div ng-if="mostrarChat" style="padding: 20px 20px 0 0" 
+                    class="listview cell bg-withe size-x200 panel-chat">
                     <a style="height: auto; color: #000" class="list" ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
                         <img ng-if="chat.conectado" src="/vendor/148705-essential-collection/png/user.png" class="list-icon">
                         <img ng-if="!chat.conectado" src="/vendor/148705-essential-collection/png/user-1.png" class="list-icon">

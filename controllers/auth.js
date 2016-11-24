@@ -28,7 +28,15 @@ module.exports = function (config) {
         });
     };
     router.get('/validar', function (req, res, next) {
-        res.render('interno/correo');
+        Usuarios.find({_id:req.session.usuario}, function (error, resultado) {
+            resultado.toArray(function(error, data) {
+                res.render('interno/correo', {
+                    nombres: data[0].nombres,
+                    apellidos: data[0].apellidos,
+                    link: 'sds'
+                });
+            });
+        });
     });
     router.post('/registrar', function (req, res, next) {
         var usuario = {

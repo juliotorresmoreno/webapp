@@ -14,6 +14,11 @@
                 <a ng-href="/curso/{{curso._id}}/editar/actividades">Actividades</a>
             </li>
         </ul>
+        <!--<a ng-href="/curso/{{curso._id}}">{{curso.nombre}}</a>
+        <a ng-href="/curso/{{curso._id}}/{{actividad._id}}">{{actividad.nombre}}</a>
+
+        {{ contenido }}-->
+
         <div ng-if="['editar_curso', 'crear_curso'].indexOf(applicationController.location) >= 0">
             <br>
             <div><label>Nombre</label></div>
@@ -55,7 +60,5 @@
         <div ng-init="pactividad='/plantillasHTML/tab_actividades.html'" ng-include="pactividad"></div>
 
         <div ng-init="ppreguntas='/plantillasHTML/tab_preguntas.html'" ng-include="ppreguntas"></div>
-
-        {{route.location}}
     </div>
 </div>

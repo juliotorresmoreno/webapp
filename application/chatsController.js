@@ -262,6 +262,20 @@
         ]
     });
     routers.add({
+        vista: 'usuariosChats',
+        routers: [
+            {
+                route: '/chats',
+                api: servidor + '/plantillasHTML/usuariosChats.html',
+                logged: true,
+                location: '',
+                before: function (params) {
+                    return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
+                }
+            }
+        ]
+    });
+    routers.add({
         vista: 'chats',
         routers: [
             {

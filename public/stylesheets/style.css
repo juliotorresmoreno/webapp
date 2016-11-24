@@ -158,3 +158,15 @@ button, .button {
     background-color: #333 !important;
     color: white
 }
+
+@media (max-width: 890px) {
+    .menu-lateral {
+        display: none;
+    }
+    .panel-chat {
+        display: none;
+    }
+    .menu-items-small {
+        display: inline;
+    }
+}

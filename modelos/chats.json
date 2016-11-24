@@ -15,8 +15,7 @@
         {
             "nombre": "fecha",
             "requerido": true,
-            "constante": true,
-            "formato": "fecha"
+            "constante": true
         }
     ]
 }

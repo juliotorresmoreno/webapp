@@ -159,6 +159,10 @@ button, .button {
     color: white
 }
 
+.menu-items-small {
+    display: none;
+}
+
 @media (max-width: 890px) {
     .menu-lateral {
         display: none;

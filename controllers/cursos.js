@@ -65,11 +65,31 @@ module.exports = function (config) {
         Cursos.update(config.mongodb.ObjectID(req.body.id), data, success, error);
     });
     router.get('/', function (req, res) {
-        Cursos.find({}, function (error, data) {
-            data.toArray(function (err, resultado) {
-                res.json({success: true, data: resultado});
+        var buscar = req.query.buscar;
+        var filtro = buscar ? {nombre: new RegExp(buscar), descripcion: new RegExp(buscar)}: {};
+        if(req.query.user == 'me') {
+            filtro.$or = [{creador: req.session.usuario}];
+            CursosEstudiantes.find({usuario:req.session.usuario}, function (error, data) {
+                data.toArray(function (err, resultado) {
+                    var ids = [];
+                    for(var i = 0; i < resultado.length; i++) {
+                        ids.push(resultado[i].curso);
+                    }
+                    filtro.$or.push({ _id: {'$in': ids}});
+                    Cursos.find(filtro, function (error, data) {
+                        data.toArray(function (err, resultado) {
+                            res.json({success:true,data:resultado});
+                        });
+                    });
+                });
             });
-        });
+        } else {
+            Cursos.find(filtro, function (error, data) {
+                data.toArray(function (err, resultado) {
+                    res.json({success:true,data:resultado});
+                });
+            });
+        }
     });
     var obtenerCurso = function(id, usuario, callback, registrado) {
         Cursos.find({_id: config.mongodb.ObjectID(id)}, function (error, data) {

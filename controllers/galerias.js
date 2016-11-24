@@ -150,8 +150,8 @@ module.exports = function (config) {
                 });
             } else {
                 res.setHeader('Content-Type', 'image/png');
-                res.setHeader('Etag', 'W/"1499c-1504d4139db"');
-                if(req.headers['if-none-match'] != 'W/"1499c-1504d4139db"') {
+                res.setHeader('Etag', config.md5(req.session.usuario));
+                if(req.headers['if-none-match'] != config.md5(req.session.usuario)) {
                     config.fs.readFile(standart, function (error, data) {
                         res.end(data);
                     });

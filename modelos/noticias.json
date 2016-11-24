@@ -23,7 +23,7 @@
                 "maximo": 600
             }
         },
-        { "nombre": "fecha", "requerido": true, "constante": true, "formato": "fecha" }
+        { "nombre": "fecha", "requerido": true, "constante": true}
     ],
     "permiso": "permiso"
 }

@@ -1,4 +1,8 @@
 <div ng-controller="cursosController">
+    <div class="input-control text" style="width: 100%; margin-top: 0">
+        <input type="text" style="width: 100%" placeholder='Escribe el nombre del curso que buscas' 
+               ng-model='cursosController.busqueda' ng-enter="cursosController.busqueda_change()">
+    </div>
     <div class="listview-outlook" data-role="listview">
         <a ng-href="/curso/{{curso._id}}" ng-click="cursosController.verCurso(curso._id)" ng-repeat="curso in cursos" class="list">
             <div class="list-content">

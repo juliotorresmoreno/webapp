@@ -275,6 +275,25 @@
                     });
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
+            },
+            {
+                route: '/mis-cursos',
+                api: servidor + '/plantillasHTML/cursos.html',
+                location: 'mis-cursos',
+                logged: true,
+                before: function () {
+                    $.get(servidor + '/api/v1/cursos?user=me').success(function (respuesta) {
+                        var $scope = $scopes.get('applicationController');
+                        if (respuesta.success) {
+                            $scope.cursos = respuesta.data;
+                        } else {
+                            $scope.applicationController.mostrarErrores(respuesta);
+                        }
+                        $scope.preload = false;
+                        $scope.safeApply();
+                    });
+                    return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
+                }
             }
         ]
     });
@@ -509,6 +528,7 @@
                 }
             };
             $scope.cursosController = {
+                busqueda: '',
                 save: function (permiso) {
                     var data = {
                         nombre: $scope.curso.nombre,
@@ -530,11 +550,27 @@
                                 $scope.curso = {};
                                 $scope.safeApply();
                             }
-                            redirigir('/curso/' + result.cursoid + '/editar');
+                            if(typeof result.cursoid !== 'undefined') {
+                                redirigir('/curso/' + result.cursoid + '/editar');
+                            }
                             $scope.applicationController.mostrarInfo(result.mensaje);
                         } else {
                             $scope.applicationController.mostrarErrores(result);
                         }
+                    });
+                },
+                busqueda_change() {
+                    var url = servidor + '/api/v1/cursos?buscar=' + $scope.cursosController.busqueda;
+                    $scope.preload = true; 
+                    $.get(url).success(function (respuesta) {
+                        var $scope = $scopes.get('applicationController');
+                        if (respuesta.success) {
+                            $scope.cursos = respuesta.data;
+                        } else {
+                            $scope.applicationController.mostrarErrores(respuesta);
+                        }
+                        $scope.preload = false;
+                        $scope.safeApply();
                     });
                 },
                 suscribir: function () {

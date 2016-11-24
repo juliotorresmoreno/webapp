@@ -458,6 +458,7 @@ if (application === undefined) {
                     var $scope = $scopes.get('applicationController');
                     var parametros = {};
                     $scope.preload = true;
+                    $scope.mostrarChat = true;
                     route.URI = route.params ? route.params : route.api;
                     if (datosVideo.StreamVideo) {
                         datosVideo.StreamVideo.stop();
@@ -509,9 +510,6 @@ if (application === undefined) {
                             case routers.estados.CANCELAR:
                                 return;
                         }
-                    }
-                    if ($scope) {
-                        $scope.mostrarChat = true;
                     }
                     if (route.URI.substr(0, 1) === '/') {
                         route.URI = servidor + route.URI;

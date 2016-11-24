@@ -3,7 +3,7 @@
         <input type="text" style="width: 100%" placeholder='Escribe el nombre de tu amigo' 
                ng-model='amigos.busqueda' ng-enter="amigos.busqueda_change()">
     </div>
-    <div ng-repeat='persona in amigos.personas' class='panel'>
+    <div style="margin-bottom: 10px" ng-repeat='persona in amigos.personas' class='panel'>
         <div class='heading' style="padding-left: 10px">
             <a style="color: white;" ng-href="{{persona.usuario}}">
                 {{persona.nombres}} {{persona.apellidos}}
@@ -13,7 +13,7 @@
             <div class="grid" style="margin: 0">
                 <div class="row size-x200">
                     <div class="cell">
-                        <img ng-src='{{applicationController.servidor}}/images/avatar-gladiator-linux.png' style='max-width: 80px; max-height: 80px'>
+                        <img ng-src='{{applicationController.servidor}}/vendor/148705-essential-collection/png/user-3.png' style='max-width: 80px; max-height: 80px'>
                     </div>
                     <div class="cell auto-size">
                         <div style='margin: 0 0 0 10px'>

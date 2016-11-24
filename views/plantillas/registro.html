@@ -5,7 +5,8 @@
             <div class="cell colspan1 bg-white redondeado">
                 <div class="login-form padding20 block-shadow">
                     <form data-role="validator" data-on-error-input="false" 
-                          data-hide-error='5000' data-hide-hint='8000'>
+                          data-hide-error='5000' data-hide-hint='8000'
+                          ng-submit="authController.registrar()">
                         <h1 class="text-light">Registrate</h1>
                         <hr class="thin"/>
                         <br />
@@ -64,7 +65,7 @@
                         <br />
                         <br />
                         <div class="form-actions">
-                            <button type="submit" class="button primary" ng-click='authController.registrar()'>
+                            <button type="submit" class="button primary">
                                 Registrate
                             </button>
                             <button type="reset" class="button link">Resetear</button>

@@ -270,6 +270,7 @@
                 logged: true,
                 location: '',
                 before: function (params) {
+                    $scopes.get('applicationController').preload = false;
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
             }

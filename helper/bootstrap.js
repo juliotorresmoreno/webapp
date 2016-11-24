@@ -22,8 +22,8 @@
             servidor + '/js/application/galeriasController.js',
             servidor + '/js/application/mensajesController.js',
             servidor + '/js/application/cursosController.js',
-            servidor + '/js/application/noticiasController.js',
-            servidor + '/js/application/chatsController.js'
+            servidor + '/js/application/chatsController.js',
+            servidor + '/js/application/noticiasController.js'
         ],
         librerias: [
             servidor + '/js/jquery/dist/jquery.min.js',

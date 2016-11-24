@@ -34,8 +34,13 @@
         <div>
             <span ng-bind-template="De: {{mensajes.remitente.nombres}} {{mensajes.remitente.apellidos}} <{{mensajes.remitente.usuario}}@melleva.net>"/>
         </div>
+        <br>
+        <div class='input-control text' style="width: 100%">
+            <label>Asunto:</label>
+            <input type='text' ng-model="mensajes.asunto" />
+        </div>        
         <div>Para:</div>
-        <div class="input-control" style="width: 100%; height: 55px">
+        <div class="input-control" style="width: 100%; ">
             <select id="select" multiple ng-model="mensajes.destinatarios">
                 <option ng-repeat="destinatario in chats" value="{{destinatario.usuario}}">
                     {{destinatario.nombres}} {{destinatario.apellidos}} &lt;{{destinatario.usuario}}@melleva.net&gt;
@@ -46,10 +51,6 @@
             </select>
         </div>
         <script type="text/javascript">var c=$("#select");c.select2();c.hide();</script>
-        <div class='input-control text' style="width: 100%">
-            <label>Asunto:</label>
-            <input type='text' ng-model="mensajes.asunto" />
-        </div>
     </div>
     <div class="input-control textarea" style="width: 100%">
         <textarea class="form-control" ng-model="mensajes.contenido" style="height: 350px"></textarea>

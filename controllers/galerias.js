@@ -134,7 +134,7 @@ module.exports = function (config) {
     router.get('/:usuario/fotoPerfil', function (req, res) {
         var fusuario = ubicacion + '/' + req.params.usuario;
         var fotoPerfil = fusuario + '/fotoPerfil';
-        var standart = config.location + '/public/images/avatar-gladiator-linux.png';
+        var standart = config.location + '/public/vendor/148705-essential-collection/png/user-3.png';
         config.fs.exists(fotoPerfil, function (exists) {
             if (exists) {
                 config.fs.stat(standart, function (erro, attr) {
@@ -142,11 +142,11 @@ module.exports = function (config) {
                     res.setHeader('Etag', attr.mtime);
                     if(req.headers['if-none-match'] == attr.mtime) {
                         res.status(304).end();
-                        return;
+                    } else {
+                        config.fs.readFile(fotoPerfil, function (error, data) {
+                            res.end(data);
+                        });
                     }
-                    config.fs.readFile(fotoPerfil, function (error, data) {
-                        res.end(data);
-                    });
                 });
             } else {
                 res.setHeader('Content-Type', 'image/png');

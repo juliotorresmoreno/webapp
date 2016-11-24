@@ -16,6 +16,6 @@
         },
         { "nombre": "asunto", "constante": true },
         { "nombre": "contenido", "constante": true },
-        { "nombre": "fecha", "requerido": true, "constante": true, "formato": "fecha" }
+        { "nombre": "fecha", "requerido": true, "constante": true }
     ]
 }

@@ -66,7 +66,7 @@ module.exports = function (config) {
                     if (req.body.email) {
                         usuario.email_mostrar = req.body.email;
                     }
-                    Usuarios.update({_id: req.session.usuario}, usuario, function (resultado) {
+                    Usuarios.update(req.session.usuario, usuario, function (resultado) {
                         res.json({success: true});
                     }, function (resultado) {
                         if (resultado.code == 1001) {

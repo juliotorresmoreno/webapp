@@ -17,7 +17,9 @@
 
 <div style="display: flex; flex-direction: column">
     <div class="app-bar top navbar-cute" data-role="appbar"> <!-- fixed-top -->
-        <a class="app-bar-element branding" href="/">Ecate</a>
+        <a class="app-bar-element branding" href="/">
+            <img height="30px" style="height: 30px" src="/images/E(du)cate-02.png">
+        </a>
         <ul class="app-bar-menu">
             <li ng-repeat="item in application.items">
                 <a href="" ng-show="item.mostrar()" class="dropdown-toggle">{{ item.titulo }}</a>
@@ -53,7 +55,7 @@
                                 <span ng-bind-template="{{applicationController.session.nombres}} {{applicationController.session.apellidos}}"></span>
                             </a>
                             <div>
-                                <a ng-href='{{applicationController.servidor}}/perfil/editar'>
+                                <a style="color: #333; font-size: 12px" ng-href='{{applicationController.servidor}}/perfil/editar'>
                                     Editar perfil
                                 </a>
                             </div>
@@ -69,7 +71,7 @@
                         <li>
                             <a ng-href='{{applicationController.servidor}}/mensajes'>
                                 <span class="mif-vpn-publ icon"></span>
-                                <span class="title">Correo</span>
+                                <span class="title">Correos</span>
                             </a>
                         </li>
                         <li>

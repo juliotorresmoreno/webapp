@@ -131,7 +131,7 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 .presentacion {
-    background-image: url("/img/header-bg.jpg");
+    background-image: url("/images/fondo.jpg");
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: center center;

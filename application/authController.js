@@ -17,6 +17,20 @@ routers.add({
     ]
 });
 routers.add({
+    vista: 'registrar',
+    routers: [
+        {
+            route: '/registrate',
+            api: servidor + '/plantillasHTML/registrate.html',
+            location: 'login',
+            logged: false,
+            before: function () {
+                return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
+            }
+        }
+    ]
+});
+routers.add({
     vista: 'logout',
     routers: [
         {

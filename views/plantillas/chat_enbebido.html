@@ -1,5 +1,9 @@
 <div style="border: 1px solid #eee; display: flex; flex-direction: column" 
     ng-controller="chatCursosController" ng-style="{height:(windowHeight()-100)+'px'}">
+    <div class="padding10" style="margin-bottom: 0">
+        <h4 style="margin: 0; padding: 0">{{ curso.nombre }}</h4>
+    </div>
+    <hr style="width: 100%">
     <div id="mensajes" class="padding10" style="flex:1; overflow-y: auto;">
         <div ng-repeat="mensaje in cursos.chats[route.parametros.id].conversacion">
             {{ formatear_fecha(mensaje.fechaHora, 'H:i:s') }}

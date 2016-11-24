@@ -181,7 +181,7 @@ if (application === undefined) {
         routers: [
             {
                 route: '/',
-                api: servidor + '/plantillasHTML/registro.html',
+                api: servidor + '/plantillasHTML/presentacion.html',
                 location: 'home',
                 logged: false,
                 before: function () {
@@ -459,6 +459,7 @@ if (application === undefined) {
                     var parametros = {};
                     $scope.preload = true;
                     $scope.mostrarChat = true;
+                    $scope.transmicionOnlive = false;
                     route.URI = route.params ? route.params : route.api;
                     if (datosVideo.StreamVideo) {
                         datosVideo.StreamVideo.stop();

@@ -66,6 +66,15 @@ module.exports = function (config, api) {
                     contenedor: obtenerMes(contenedor), 
                     filtro: filtro
                 }, function (error, resultado) {
+                    for(var i = 0; i < resultado.length - 1; i++) {
+                        for(var j = i + 1; j < resultado.length; j++) {
+                            if(resultado[i].fecha < resultado[j].fecha) {
+                                var temp = resultado[i];
+                                resultado[i] = resultado[j];
+                                resultado[j] = temp;
+                            }
+                        }
+                    }
                     res.json({ success: true, data: resultado, limite: limite });
                 });
             });
@@ -115,7 +124,8 @@ module.exports = function (config, api) {
             compartidos: []
         };
         Noticias.setColeccion('noticias_' + data.contenedor);
-        Noticias.add(data, function() {
+        Noticias.add(data, function(resultado) {
+            console.log(resultado);
             res.json({success:true});
         }, req.error, true);
     });

@@ -1,3 +1,21 @@
+<!--<div ng-controller="cursosController">
+    <h3 ng-if="estoyTransmitiendo()">Transmision en curso</h3>
+    <h3 ng-if="!estoyTransmitiendo()">No hay transmision en este momento</h3>
+    <video id="localVideo" style="width: 600px"></video>
+    <div ng-if="!estoyTransmitiendo()">
+        <div class="bg-grayDarker" style="width: 100%; height: 400px">
+        </div>
+    </div>
+    <a ng-if="estoyTransmitiendo()" class="button" style="color: white" href="/mis-cursos">
+        Detener transmision
+    </a>
+</div>-->
+
 <div ng-controller="cursosController">
-    <video id="localVideo"></video>
+    <h3 ng-if="transmicionOnlive">Transmision en curso</h3>
+    <h3 ng-if="!transmicionOnlive">No estas transmiendo</h3>
+    <video id="localVideo" style="width: 600px"></video>
+    <a class="button" style="color: white" href="/mis-cursos">
+        Detener transmision
+    </a>
 </div>

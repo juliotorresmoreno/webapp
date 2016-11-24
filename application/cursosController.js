@@ -422,6 +422,7 @@
         });
         $scope.mostrarChat = false;
         $scope.webrtc.on('readyToCall', function() {
+            $scope.transmicionOnlive = true;
             $scope.webrtc.joinRoom($scope.route.parametros.id);
         });
     };
@@ -432,6 +433,10 @@
             autoRequestMedia: true,
             media: { audio: false, video: false },
             url: 'https://' + location.hostname + ':8088'
+        });
+        $scope.webrtc.on('videoAdded', function() {
+            $scope.transmicionOnlive = true;
+            $scope.safeApply();
         });
         $scope.mostrarChat = false;
         $scope.safeApply();

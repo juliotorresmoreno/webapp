@@ -164,6 +164,20 @@
                 logged: true,
                 before: function (params) {
                     cargar_curso(params.route.parametros.id);
+                    cargar_contenido(params.route.parametros.id, function ($scope, respuesta) {
+                        if(respuesta.success) {
+                            if(respuesta.data.length === 0) {
+                                $scope.contenido = {};
+                                return;
+                            }
+                            for(var i = 0; i < respuesta.data.length; i++) {
+                                if(respuesta.data[i]._id == params.route.parametros.contenido) {
+                                    $scope.contenido = respuesta.data[i];
+                                    break;
+                                }
+                            }
+                        }
+                    });
                     cargar_actividades(params.route.parametros.contenido, function ($scope, respuesta) {
                         if(respuesta.success) {
                             if(respuesta.data.length === 0) {
@@ -191,6 +205,20 @@
                     var contenido = params.route.parametros.contenido;
                     var actividad = params.route.parametros.actividad;
                     cargar_curso(cursoid);
+                    cargar_contenido(params.route.parametros.id, function ($scope, respuesta) {
+                        if(respuesta.success) {
+                            if(respuesta.data.length === 0) {
+                                $scope.contenido = {};
+                                return;
+                            }
+                            for(var i = 0; i < respuesta.data.length; i++) {
+                                if(respuesta.data[i]._id == params.route.parametros.contenido) {
+                                    $scope.contenido = respuesta.data[i];
+                                    break;
+                                }
+                            }
+                        }
+                    });
                     cargar_actividades(contenido, function ($scope, respuesta) {
                         if(respuesta.success) {
                             if(respuesta.data.length === 0) {
@@ -219,6 +247,21 @@
                     var contenido = params.route.parametros.contenido;
                     var actividad = params.route.parametros.actividad;
                     cargar_curso(cursoid);
+                    cargar_contenido(params.route.parametros.id, function ($scope, respuesta) {
+                        if(respuesta.success) {
+                            if(respuesta.data.length === 0) {
+                                $scope.contenido = {};
+                                return;
+                            }
+                            for(var i = 0; i < respuesta.data.length; i++) {
+                                if(respuesta.data[i]._id == params.route.parametros.contenido) {
+                                    $scope.contenido = respuesta.data[i];
+                                    break;
+                                }
+                            }
+                            $scope.safeApply();
+                        }
+                    });
                     cargar_actividades(contenido, function ($scope, respuesta) {
                         if(respuesta.success) {
                             if(respuesta.data.length === 0) {
@@ -534,7 +577,7 @@
             };
             $scope.cursosController = {
                 busqueda: '',
-                save: function (permiso) {
+                save(permiso) {
                     var data = {
                         nombre: $scope.curso.nombre,
                         descripcion: $scope.curso.descripcion,
@@ -578,7 +621,7 @@
                         $scope.safeApply();
                     });
                 },
-                suscribir: function () {
+                suscribir() {
                     var url = servidor + '/api/v1/cursos/suscribir';
                     var params = {id: $scope.curso._id};
                     $.post(url, params).success(function (respuesta) {
@@ -591,7 +634,7 @@
                         }
                     });
                 },
-                retirar: function () {
+                retirar() {
                     var url = servidor + '/api/v1/cursos/retirar';
                     var params = {id: $scope.curso._id};
                     $.post(url, params).success(function (respuesta) {
@@ -604,7 +647,7 @@
                         }
                     });
                 },
-                guardar_contenido: function(accion) {
+                guardar_contenido(accion) {
                     var scope = $scopes.get('applicationController');
                     var url = servidor + '/api/v1/cursos/' + 
                               scope.route.parametros.id + '/contenidos/' + 
@@ -626,7 +669,7 @@
                         }
                     });
                 },
-                continuar_actividad: () => {
+                continuar_actividad() {
                     var cursoid = $scope.route.parametros.id;
                     var contenido = $scope.route.parametros.contenido; 
                     var actividad = $scope.route.parametros.actividad;
@@ -634,15 +677,15 @@
                               '/editar/contenido/' + contenido + 
                               '/actividad/' + actividad + '/preguntas');
                 },
-                agregarContenido: () => {
+                agregarContenido() {
                     $scope.route.location = 'agregar_contenido_curso';
                     $scopes.get('applicationController').contenido = {};
                 },
-                cancelar_contenido: () => {
+                cancelar_contenido() {
                     redirigir('/curso/'+$scope.curso._id+'/editar/contenido');
                     $scope.route.location = 'contenido_curso';
                 },
-                eliminar_contenido: () => {
+                eliminar_contenido() {
                     var url = servidor + '/api/v1/cursos/' + 
                               $scope.route.parametros.id + 
                               '/contenidos/eliminar';
@@ -660,19 +703,19 @@
                         }
                     });
                 },
-                continuar_contenido: () => {
+                continuar_contenido() {
                     var cursoid = $scope.route.parametros.id;
                     var contenido = $scope.route.parametros.contenido; 
                     redirigir('/curso/' + cursoid + '/editar/contenido/' + contenido + '/actividades');
                 },
-                verCurso: (cursoid) => {
+                verCurso(cursoid) {
                     redirigir('/curso/' + cursoid);
                 },
-                agregarActividad: () => {
+                agregarActividad() {
                     $scopes.get('applicationController').actividad = {};
                     $scope.route.location = 'agregar_actividad_curso';
                 },
-                guardar_actividad: () => {
+                guardar_actividad() {
                     var scope = $scopes.get('applicationController');
                     var url = servidor + '/api/v1/cursos/' + 
                               scope.route.parametros.id + 
@@ -691,7 +734,7 @@
                         }
                     });
                 },
-                eliminar_actividad: () => {
+                eliminar_actividad() {
                     var url = servidor + '/api/v1/cursos/' + 
                               $scope.route.parametros.id + 
                               '/actividades/' + 
@@ -710,11 +753,11 @@
                         }
                     });
                 },
-                cancelar_actividad: () => {
+                cancelar_actividad() {
                     redirigir('/curso/' + $scope.curso._id + '/editar/contenido/' + $scope.route.parametros.contenido + '/actividades');
                     $scope.route.location = 'actividades_curso';
                 },
-                agregarPregunta: () => {
+                agregarPregunta() {
                     $scope.route.location = 'agregar_pregunta_actividad_curso';
                     $scopes.get('applicationController').pregunta = {};
                     $scopes.get('applicationController').respuestas = [
@@ -766,7 +809,7 @@
                     redirigir('/curso/' + $scope.curso._id + '/editar/contenido/' + $scope.route.parametros.contenido + '/actividad/' + $scope.route.parametros.actividad + '/preguntas');
                     $scope.route.location = 'preguntas_actividad_curso';
                 },
-                agregarRespuesta: () => {
+                agregarRespuesta() {
                     $scopes.get('applicationController').respuestas.push({enunciado:'',valor:'0'});
                 },
                 eliminarRespuesta: (respuesta) => {

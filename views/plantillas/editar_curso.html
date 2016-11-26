@@ -1,4 +1,27 @@
 <div ng-controller='cursosController' style="margin-top: 0;">
+    <div style="margin-bottom: 10px">
+        <span ng-if="curso">
+            <a ng-href="/curso/{{curso._id}}">{{curso.nombre}}</a>
+        </span>
+        <span ng-if="route.parametros.contenido">
+            /
+            <a ng-href="/curso/{{curso._id}}/editar/contenido/{{contenido._id}}">
+                {{contenido.nombre}}
+            </a>
+        </span>
+        <span ng-if="route.parametros.actividad">
+            /
+            <a ng-href="/curso/{{curso._id}}/editar/contenido/{{contenido._id}}/actividad/{{actividad._id}}">
+                {{actividad.nombre}}
+            </a>
+        </span>
+        <span ng-if="route.parametros.pregunta">
+            /
+            <a ng-href="/curso/{{curso._id}}/editar/contenido/{{contenido._id}}/actividad/{{actividad._id}}/pregunta/{{pregunta._id}}">
+                pregunta
+            </a>
+        </span>
+    </div>
     <div class="tabcontrol">
         <ul class="tabs">
             <li ng-class="{active:['editar_curso','crear_curso'].indexOf(applicationController.location)+1}">
@@ -13,11 +36,7 @@
                 ng-show="curso._id">
                 <a ng-href="/curso/{{curso._id}}/editar/actividades">Actividades</a>
             </li>
-        </ul>
-        <!--<a ng-href="/curso/{{curso._id}}">{{curso.nombre}}</a>
-        <a ng-href="/curso/{{curso._id}}/{{actividad._id}}">{{actividad.nombre}}</a>
-
-        {{ contenido }}-->
+        </ul>       
 
         <div ng-if="['editar_curso', 'crear_curso'].indexOf(applicationController.location) >= 0">
             <br>

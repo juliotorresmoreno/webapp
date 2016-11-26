@@ -21,8 +21,8 @@ routers.add({
     routers: [
         {
             route: '/registrate',
-            api: servidor + '/plantillasHTML/registrate.html',
-            location: 'login',
+            api: servidor + '/plantillasHTML/registro.html',
+            location: 'registrar',
             logged: false,
             before: function () {
                 return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;

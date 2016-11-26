@@ -45,7 +45,8 @@
 
     <div ng-if='noticiasController.modo == "comentario"'>
         <a style="float: right; margin: 10px 10px 0 0" href="javascript: void(0)" ng-click="noticiasController.cancelar_comentario()">&times;</a>
-        <div class="bd-grayLighter" style="margin-bottom: 10px; padding: 20px; border: 1px solid" ng-if="noticias.noticia.estado != 'eliminado'">
+        <div class="bd-grayLighter" style="margin-bottom: 10px; padding: 20px; border: 1px solid" 
+             ng-if="noticias.noticia.estado != 'eliminado'">
             <h5 style="margin: 0; padding: 0">
                 <a style="color: #2086bf" ng-href="{{applicationController.servidor}}/{{noticias.noticia.usuario.usuario}}">
                     {{noticias.noticia.usuario.nombres}} {{noticias.noticia.usuario.apellidos}}
@@ -64,13 +65,15 @@
         <div class="listview-outlook" >
             <div class="list" ng-class="{active:false}" ng-repeat="comentario in noticias.noticia.comentarios| orderBy:'-fecha'" ng-if="noticia.estado != 'eliminado'">
                 <div class="list-content">
-                    <span class="list-title">{{comentario.comentario}}</span>
+                    <span class="list-title">
+                        {{comentario.comentario}}
+                    </span>
                     <span class="list-subtitle">
                         <a ng-href="{{applicationController.servidor}}/{{comentario.usuario.usuario}}">
                             {{comentario.usuario.nombres}} {{comentario.usuario.apellidos}}
                         </a>
                     </span>
-                    <span class="list-remark">Publicado el:  {{formatear_fecha(comentario.fecha, 'Y-m-d H:i:s')}}</span>
+                    <span class="list-remark">Publicado el: {{formatear_fecha(comentario.fecha, 'Y-m-d H:i:s')}}</span>
                 </div>
             </div>
         </div>

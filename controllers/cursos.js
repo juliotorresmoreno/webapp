@@ -531,7 +531,7 @@ module.exports = function (config) {
         }
     });
 
-    router.post('/:cursoid/horario/agregar', function (req, res, next) {
+    router.post('/:cursoid/horario/crear', function (req, res, next) {
         var cursoid = req.params.cursoid;
         var usuario = req.session.usuario;
         var dato = {
@@ -557,6 +557,38 @@ module.exports = function (config) {
                     }
                 };
                 Horarios.add(dato, success, error);
+            } else {
+                res.json({success: false, error: 'No eres el creador'});
+            }
+        }, false);
+    });
+
+    router.post('/:cursoid/horario/editar', function (req, res, next) {
+        var cursoid = req.params.cursoid;
+        var usuario = req.session.usuario;
+        var dato = {
+            evento: req.body.evento,
+            fecha: req.body.fecha,
+            hora: req.body.hora,
+            curso: config.mongodb.ObjectID(cursoid),
+            creador: usuario
+        };
+        obtenerCurso(cursoid, usuario, function (resultado) {
+            if(resultado.data.creador === usuario) {
+                var success = function (resultado) {
+                    res.json({
+                        success: true,
+                        mensaje: 'Actualizado correctamente.'
+                    });
+                };
+                var error = function (resultado) {
+                    if (resultado.code === 1000 || resultado.code === 1001) {
+                        res.json(resultado.error);
+                    } else {
+                        res.end();
+                    }
+                };
+                Horarios.update(config.mongodb.ObjectID(req.body._id), dato, success, error);
             } else {
                 res.json({success: false, error: 'No eres el creador'});
             }

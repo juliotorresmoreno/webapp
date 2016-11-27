@@ -30,27 +30,31 @@
 
     function cargar_horario(cursoid, horarioid) {
         var $scope = $scopes.get('applicationController');
+        var url = servidor + '/api/v1/cursos/' + cursoid + '/horarios';
         function bsq () {
-            console.log($scope.horario);
             if($scope.horarios && $scope.horarios.length > 0) {
                 for(var i = 0; i < $scope.horarios.length; i++) {
                     if($scope.horarios[i]._id == horarioid) {
+                        var hora = $scope.horarios[i].hora.split(':');
                         $scope.horario = $scope.horarios[i];
+                        $scope.horario.hora = hora[0];
+                        $scope.horario.minutos = hora[1];
                         return true;
                     }
                 }
             }
-            $scope.horarios = {};
             return false;
         }
         if(horarioid === undefined || bsq() == false) {
-            $.get(servidor + '/api/v1/cursos/' + cursoid + '/horarios').success(function (respuesta) {
-                if($scope.horarios.length === 0) {
+            $.get(url).success(function (respuesta) {
+                if(respuesta.data.length === 0) {
                     $scope.route.location = 'agregar_horario_curso';
                 }
-                if(respuesta.success && horarioid) {
+                if(respuesta.success) {
                     $scope.horarios = respuesta.data;
-                    bsq();
+                    if(horarioid) {
+                        bsq();
+                    }
                 } else {
                     $scope.horarios = [];
                     $scope.horario = {};
@@ -844,19 +848,22 @@
                 },
                 cancelar_horario() {
                     $scope.route.location = 'horario_curso';
+                    redirigir('/curso/'+$scope.route.parametros.id+'/editar/horario');
                 },
                 guardar_horario() {
                     var $scope = $scopes.get('applicationController');
                     var horario = {
+                        _id: $scope.horario._id,
                         evento: $scope.horario.evento,
                         fecha: $scope.horario.fecha,
                         hora: $scope.horario.hora + ':' + $scope.horario.minutos
                     };
-                    var url = servidor + '/api/v1/cursos/' + $scope.route.parametros.id + 
-                                         '/horario/agregar'; 
+                    var url = servidor + '/api/v1/cursos/' + $scope.route.parametros.id + '/horario' +
+                                         ($scope.horario._id ? '/editar': '/crear'); 
                     $.post(url, horario).success(function(result) {
                         if(result.success) {
                             $scope.applicationController.mostrarInfo(result.mensaje);
+                            $scope.cursosController.cancelar_horario();
                         } else {
                             $scope.applicationController.mostrarErrores(result);
                         }

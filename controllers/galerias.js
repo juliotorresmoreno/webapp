@@ -143,7 +143,7 @@ module.exports = function (config) {
 
         config.fs.exists(fotoPerfil, function (exists) {
             if (exists) {
-                config.fs.stat(standart, function (erro, attr) {
+                config.fs.stat(fotoPerfil, function (erro, attr) {
                     res.setHeader('Content-Type', 'image/png');
                     res.setHeader('Etag', attr.mtime);
                     if(req.headers['if-none-match'] == attr.mtime) {

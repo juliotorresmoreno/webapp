@@ -7,6 +7,9 @@
             <li ng-class="{active:['contenido','contenidos','actividad'].indexOf(route.location)+1}">
                 <a href="" ng-href="/curso/{{curso._id}}/contenido">Contenido</a>
             </li>
+            <li ng-class="{active:['horario'].indexOf(route.location)+1}">
+                <a href="" ng-href="/curso/{{curso._id}}/horario">Horario</a>
+            </li>
         </ul>
         <div ng-show="route.location=='curso'">
             <div style="text-align: center"><h1>{{curso.nombre}}</h1></div>

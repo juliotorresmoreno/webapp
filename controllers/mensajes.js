@@ -3,9 +3,16 @@ module.exports = function (config) {
     var Mensajes = config.modelos.BaseModel(config);
     Mensajes.setModelo(config.modelos.mensajes);
     router.post('/enviar', function (req, res, next) {
+        var destinatarios = typeof req.body.destinatarios === 'string' ? 
+                                   JSON.stringify(req.body.destinatarios): 
+                                   req.body.destinatarios;
         var mensaje = {
-            remitente: req.session,
-            destinatarios: JSON.parse(req.body.destinatarios),
+            remitente: {
+                usuario:req.session.usuario,
+                nombres:req.session.nombres,
+                apellidos:req.session.apellidos
+            },
+            destinatarios: destinatarios,
             asunto: req.body.asunto,
             contenido: req.body.contenido,
             fecha: Date.now()

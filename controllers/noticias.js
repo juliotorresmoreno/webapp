@@ -114,7 +114,11 @@ module.exports = function (config, api) {
     });
     router.post('/publicar', function (req, res, next) {
         var data = {
-            usuario: req.session,
+            usuario: {
+                usuario: req.session.usuario,
+                nombres: req.session.nombres,
+                apellidos: req.session.apellidos
+            },
             comentario: req.body.comentario,
             permiso: req.body.permiso,
             fecha: Date.now(),

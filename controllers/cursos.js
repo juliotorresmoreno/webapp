@@ -533,7 +533,34 @@ module.exports = function (config) {
 
     router.post('/:cursoid/horario/agregar', function (req, res, next) {
         var cursoid = req.params.cursoid;
-        res.end('sd');
+        var usuario = req.session.usuario;
+        var dato = {
+            evento: req.body.evento,
+            fecha: req.body.fecha,
+            hora: req.body.hora,
+            curso: config.mongodb.ObjectID(cursoid),
+            creador: usuario
+        };
+        obtenerCurso(cursoid, usuario, function (resultado) {
+            if(resultado.data.creador === usuario) {
+                var success = function (resultado) {
+                    res.json({
+                        success: true,
+                        mensaje: 'Agregado correctamente.'
+                    });
+                };
+                var error = function (resultado) {
+                    if (resultado.code === 1000 || resultado.code === 1001) {
+                        res.json(resultado.error);
+                    } else {
+                        res.end();
+                    }
+                };
+                Horarios.add(dato);
+            } else {
+                res.json({success: false, error: 'No eres el creador'});
+            }
+        }, false);
     });
 
     return router;

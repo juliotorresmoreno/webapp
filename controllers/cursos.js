@@ -6,6 +6,7 @@ module.exports = function (config) {
     var Contenidos = config.modelos.BaseModel(config, config.modelos.contenidos);
     var Actividades = config.modelos.BaseModel(config, config.modelos.actividades);
     var Preguntas = config.modelos.BaseModel(config, config.modelos.preguntas);
+    var Horarios = config.modelos.BaseModel(config, config.modelos.horarios);
     var CursosEstudiantes = config.modelos.BaseModel(config, config.modelos.cursosEstudiantes);
     
     router.post('/crear', function (req, res) {
@@ -528,6 +529,11 @@ module.exports = function (config) {
                 mensaje: 'Peticion mal formada'
             })
         }
+    });
+
+    router.post('/:cursoid/horario/agregar', function (req, res, next) {
+        var cursoid = req.params.cursoid;
+        res.end('sd');
     });
 
     return router;

@@ -247,6 +247,19 @@
                     cargar_preguntas(actividad, pregunta);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
+            },
+            {
+                route: '/curso/:id/editar/horario',
+                api: servidor + '/plantillasHTML/editar_curso.html',
+                location: 'horario_curso',
+                logged: true,
+                before: function (params) {
+                    var $scope = $scopes.get('applicationController');
+                    $scope.horario = {};
+                    $scope.horarios = [];
+                    cargar_curso(params.route.parametros.id);
+                    return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
+                }
             }
         ]
     });
@@ -459,6 +472,7 @@
                 'curso', 'contenido', 'contenidos', 'actividad',
                 'contenido_curso',
                 'contenidos_curso',
+                'horario_curso',
                 'transmitir_curso',
                 'transmicion_curso'
             ];
@@ -772,7 +786,7 @@
                 agregarRespuesta() {
                     $scopes.get('applicationController').respuestas.push({enunciado:'',valor:'0'});
                 },
-                eliminarRespuesta: (respuesta) => {
+                eliminarRespuesta(respuesta) {
                     for(var i = 0; i < $scopes.get('applicationController').respuestas.length; i++) {
                         var item = $scopes.get('applicationController').respuestas[i];
                         if(item.$$hashKey == respuesta.$$hashKey) {
@@ -780,6 +794,29 @@
                             break;
                         }
                     }
+                },
+                agregar_horario() {
+                    $scope.route.location = 'agregar_horario';
+                },
+                cancelar_horario() {
+                    $scope.route.location = 'horario_curso';
+                },
+                guardar_horario() {
+                    var $scope = $scopes.get('applicationController');
+                    var horario = {
+                        evento: $scope.horario.evento,
+                        fecha: $scope.horario.fecha,
+                        hora: $scope.horario.hora + ':' + $scope.horario.minutos
+                    };
+                    var url = servidor + '/api/v1/cursos/' + $scope.route.parametros.id + 
+                                         '/horario/agregar'; 
+                    $.post(url, horario).success(function(result) {
+                        if(result.success) {
+                            $scope.applicationController.mostrarInfo(result.mensaje);
+                        } else {
+                            $scope.applicationController.mostrarErrores(result);
+                        }
+                    });
                 },
                 responder_actividad() {
                     var scope = $scopes.get('applicationController');

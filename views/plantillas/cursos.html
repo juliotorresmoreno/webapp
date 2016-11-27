@@ -3,6 +3,22 @@
         <input type="text" style="width: 100%" placeholder='Escribe el nombre del curso que buscas' 
                ng-model='cursosController.busqueda' ng-enter="cursosController.busqueda_change()">
     </div>
+    <div class="panel" style="margin-bottom: 10px" ng-repeat="curso in cursos">
+        <div class="heading" style="padding-left: 10px">
+            {{curso.nombre}}
+        </div>
+        <div class="content padding10" style="min-height: 80px; display: flex; flex-direction: column">
+            <div style="flex: 1">
+                {{curso.descripcion}}
+            </div>
+            <div>
+                <a ng-href="/curso/{{curso._id}}" ng-click="cursosController.verCurso(curso._id)">
+                    Ver mas
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--
     <div class="listview-outlook" data-role="listview">
         <a ng-href="/curso/{{curso._id}}" ng-click="cursosController.verCurso(curso._id)" ng-repeat="curso in cursos" class="list">
             <div class="list-content">
@@ -10,5 +26,5 @@
                 <span class="list-subtitle">{{curso.descripcion}}</span>
             </div>
         </a>
-    </div>
+    </div>-->
 </div>

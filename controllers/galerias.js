@@ -1,15 +1,21 @@
+"use strict";
+
 module.exports = function (config) {
-    var router = config.express.Router();
-    var ubicacion = config.location + '/usuarios';
-    var multipart = require('connect-multiparty');
+    const router = config.express.Router();
+    const ubicacion = config.location + '/usuarios';
+    const multipart = require('connect-multiparty');
+    const imagemin = require('imagemin');
+    const imageminMozjpeg = require('imagemin-mozjpeg');
+    const imageminPngquant = require('imagemin-pngquant');
+    const standart = config.location + '/public/vendor/148705-essential-collection/png/user-3.png';
     router.post('/', function (req, res, next) {
         var nombre = req.body.nombre;
         var permiso = req.body.permiso;
         var id = req.body.id !== undefined ? req.body.id : '';
         var fusuario = ubicacion + '/' + req.session.usuario;
-        var galeria = fusuario + '/' + nombre;
+        var galeria = fusuario + '/' + nombre + '/build';
         var galeriaid = fusuario + '/' + id;
-        var permisos = galeria + '/' + 'permiso';
+        var permisos = fusuario + '/' + nombre + '/permiso';
         var crearGaleria = function () {
             config.fs.exists(galeria, function (exists) {
                 if (!exists) {
@@ -81,9 +87,11 @@ module.exports = function (config) {
                 return res.json({success: true, galerias: []});
             }
             config.fs.readdir(fusuario, function (err, resultado) {
-                galerias = [];
-                if (resultado === undefined || resultado.length === 0)
-                    return res.json({success: true, galerias: galerias});
+                var galerias = [];
+                if (resultado === undefined || resultado.length === 0) {
+                    res.json({success: true, galerias: galerias});
+                    return;
+                }
                 var leer_permiso = function (galeria) {
                     return function (error, data) {
                         galerias.push({nombre: galeria, permiso: data.toString()});
@@ -108,20 +116,18 @@ module.exports = function (config) {
     var listar_fotos = function (req, res, next) {
         var usuario = req.params.usuario ? req.params.usuario : req.session.usuario;
         var fusuario = ubicacion + '/' + usuario;
-        var galeria = fusuario + '/' + req.params.galeria;
-        var permiso = galeria + '/permiso';
+        var galeria = fusuario + '/' + req.params.galeria + '/build';
+        var permiso = fusuario + '/' + req.params.galeria + '/permiso';
         config.fs.exists(galeria, function (exists) {
             if (exists) {
                 config.fs.readdir(galeria, function (err, resultado) {
                     var respuesta = [];
-                    resultado.splice(resultado.indexOf('permiso'), 1);
                     for (var i = 0; i < resultado.length; i++) {
                         respuesta.push({
                             nombre: resultado[i],
                             ruta: '/api/v1/galerias/' + usuario + '/' + req.params.galeria + '/' + resultado[i]
                         });
                     }
-                    ;
                     config.fs.readFile(permiso, function (error, data) {
                         res.json({success: true, fotos: respuesta, permiso: data.toString()});
                     });
@@ -134,7 +140,7 @@ module.exports = function (config) {
     router.get('/:usuario/fotoPerfil', function (req, res) {
         var fusuario = ubicacion + '/' + req.params.usuario;
         var fotoPerfil = fusuario + '/fotoPerfil';
-        var standart = config.location + '/public/vendor/148705-essential-collection/png/user-3.png';
+
         config.fs.exists(fotoPerfil, function (exists) {
             if (exists) {
                 config.fs.stat(standart, function (erro, attr) {
@@ -168,14 +174,13 @@ module.exports = function (config) {
         var usuario = req.params.usuario ? req.params.usuario : req.session.usuario;
         var fusuario = ubicacion + '/' + usuario;
         var galeria = fusuario + '/' + req.params.galeria;
-        var foto = galeria + '/' + req.params.foto;
-        res.setHeader('Content-Type', 'image/png');
-        res.setHeader('Etag', 'W/"1499c-1504d4139db"');
+        var foto = galeria + '/build/' + req.params.foto;
         if(req.headers['if-none-match']) {
+            res.setHeader('Content-Type', 'image/png');
+            res.setHeader('Etag', 'W/"1499c-1504d4139db"');
             res.status(304).end();
             return;
         }
-        
         var responder = function (foto) {
             config.fs.exists(foto, function (exists) {
                 if (exists) {
@@ -190,18 +195,31 @@ module.exports = function (config) {
         if (req.params.foto === '@preview') {
             config.fs.exists(galeria, function (exists) {
                 if (exists) {
-                    config.fs.readdir(galeria, function (err, resultado) {
-                        resultado.splice(resultado.indexOf('permiso'), 1);
-                        if (resultado.length > 0)
-                            responder(galeria + '/' + resultado[config.randomize(0, resultado.length - 1)]);
-                        else
+                    config.fs.exists(galeria, function (exists) {
+                        if(exists) {
+                            config.fs.readdir(galeria + '/build', function (err, resultado) {
+                                var image = resultado[config.randomize(0, resultado.length - 1)].replace(/^.*\//, '');
+                                if (resultado.length > 0) {
+                                    res.redirect(image);
+                                } else {
+                                    responder('./public/images/not-found.png');
+                                }
+                            });
+                        } else {
                             responder('./public/images/not-found.png');
+                        }
                     });
                 } else {
-                    res.json({success: false, mensaje: 'La galeria no existe'});
+                    res.json({
+                        success: false, 
+                        mensaje: 'La galeria no existe'+ galeria,
+                        hhh: req.params.galeria
+                    });
                 }
             });
         } else {
+            res.setHeader('Content-Type', 'image/png');
+            res.setHeader('Etag', 'W/"1499c-1504d4139db"');
             responder(foto);
         }
     };
@@ -210,7 +228,7 @@ module.exports = function (config) {
 
     router.post('/:galeria/establecerFotoPerfil', function (req, res, next) {
         var fusuario = ubicacion + '/' + req.session.usuario;
-        var galeria = fusuario + '/' + req.params.galeria;
+        var galeria = fusuario + '/' + req.params.galeria + '/build';
         var fotoid = galeria + '/' + req.body.id;
         var fotoPerfil = fusuario + '/fotoPerfil';
         config.fs.exists(fotoid, function (exists) {
@@ -228,10 +246,10 @@ module.exports = function (config) {
 
     router.post('/:galeria/renombrarFoto', function (req, res, next) {
         var fusuario = ubicacion + '/' + req.session.usuario;
-        var galeria = fusuario + '/' + req.params.galeria;
+        var galeria = fusuario + '/' + req.params.galeria + '/build';
         var foto = galeria + '/' + req.body.nombre;
         var fotoid = galeria + '/' + req.body.id;
-        var permiso = galeria + '/permiso';
+        var permiso = fusuario + '/' + req.params.galeria + '/permiso';
         config.fs.exists(fotoid, function (exists) {
             if (exists) {
                 config.fs.exists(foto, function (exists) {
@@ -251,9 +269,9 @@ module.exports = function (config) {
 
     router.post('/:galeria/eliminarFoto', function (req, res, next) {
         var fusuario = ubicacion + '/' + req.session.usuario;
-        var galeria = fusuario + '/' + req.params.galeria;
+        var galeria = fusuario + '/' + req.params.galeria + '/build';
         var fotoid = galeria + '/' + req.body.id;
-        var permiso = galeria + '/permiso';
+        var permiso = fusuario + '/' + req.params.galeria + '/permiso';
         config.fs.exists(fotoid, function (exists) {
             if (exists) {
                 config.fs.unlink(fotoid, function () {
@@ -276,7 +294,10 @@ module.exports = function (config) {
         is.pipe(os);
         is.on('end', function () {
             config.fs.unlinkSync(foto);
-            listar_fotos(req, res, next);
+            imagemin([newPath], galeria + '/build').then(files => {
+                config.fs.unlinkSync(newPath);
+                listar_fotos(req, res, next);
+            });
         });
     });
     router.post('/:galeria/subirFoto64', function (req, res, next) {

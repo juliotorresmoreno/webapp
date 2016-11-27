@@ -1,0 +1,47 @@
+<div ng-if="['horario_curso','agregar_horario'].indexOf(applicationController.location)+1">
+     <div ng-if="route.location === 'horario_curso'">
+        <br>
+        <div class="listview">
+            <div style="color: black" ng-repeat="horario in horarios" class="list">
+                <img src="/icons/png/notepad.png" class="list-icon">
+                <a class="list-title">
+                    {{horario.nombre}}
+                </a>
+                <div class="list-remark">{{ curso.creador }}</div>
+            </div>
+        </div>
+        <button class="button primary" ng-click="cursosController.agregar_horario()">
+            Agregar
+        </button>
+    </div>
+    <div ng-if="route.location === 'agregar_horario'">
+        <br/>
+        <div><label>Nombre del evento:</label></div>
+        <div class="input-control text full-size">
+            <input type="text" class="form-control" ng-model='horario.evento' />
+        </div>
+        <div><label>Fecha:</label></div>
+        <div class="input-control text" data-role="datepicker" data-format="yyyy/mm/dd">
+            <input type="text" class="form-control" ng-model='horario.fecha' />
+            <button class="button primary"><span class="mif-calendar"></span></button>
+        </div>
+        <div><label>Hora:</label></div>
+        <div class="input-control select">
+            <select style="width: 60px" ng-model="horario.hora">
+                <option ng-repeat="i in 24 | range">{{(i <= 9 ? '0' : '') + i}}</option>
+            </select>
+            <select style="width: 60px" ng-model="horario.minutos">
+                <option ng-repeat="i in 60 | range">{{(i <= 9 ? '0' : '') + i}}</option>
+            </select>
+        </div>
+        <br>
+        <div>
+            <button class="button primary" ng-click="cursosController.guardar_horario()">
+                Guardar
+            </button>
+            <button class="button primary" ng-click="cursosController.cancelar_horario()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>

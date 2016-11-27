@@ -1,0 +1,28 @@
+{
+    "tabla": "horarios",
+    "campos": [
+        {
+            "nombre": "evento",
+            "requerido": true,
+            "tamano": {
+                "minimo": 3,
+                "maximo": 60
+            },
+            "caracteres": {
+                "alfabeto": true,
+                "numeros": true,
+                "espacios": true,
+                "especiales": false
+            }
+        },
+        {
+            "nombre": "fecha",
+            "requerido": true
+        },
+        {
+            "nombre": "hora",
+            "requerido": true,
+            "pattern": "/^([0-1]{1}[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}$/"
+        }
+    ]
+}

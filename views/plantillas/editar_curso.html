@@ -32,12 +32,11 @@
                 ng-show="curso._id">
                 <a ng-href="/curso/{{curso._id}}/editar/contenido">Contenido</a>
             </li>
-            <li ng-if="false" ng-class="{active:['actividades_curso','editar_actividad_curso'].indexOf(applicationController.location)+1}"
+            <li ng-class="{active:['horario_curso','agregar_horario'].indexOf(applicationController.location)+1}" 
                 ng-show="curso._id">
-                <a ng-href="/curso/{{curso._id}}/editar/actividades">Actividades</a>
+                <a ng-href="/curso/{{curso._id}}/editar/horario">Horario</a>
             </li>
         </ul>       
-
         <div ng-if="['editar_curso', 'crear_curso'].indexOf(applicationController.location) >= 0">
             <br>
             <div><label>Nombre</label></div>
@@ -79,5 +78,7 @@
         <div ng-init="pactividad='/plantillasHTML/tab_actividades.html'" ng-include="pactividad"></div>
 
         <div ng-init="ppreguntas='/plantillasHTML/tab_preguntas.html'" ng-include="ppreguntas"></div>
+
+        <div ng-init="phorario='/plantillasHTML/tab_horario.html'" ng-include="phorario"></div>
     </div>
 </div>

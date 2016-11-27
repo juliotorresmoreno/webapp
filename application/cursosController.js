@@ -28,6 +28,38 @@
         }
     }
 
+    function cargar_horario(cursoid, horarioid) {
+        var $scope = $scopes.get('applicationController');
+        function bsq () {
+            console.log($scope.horario);
+            if($scope.horarios && $scope.horarios.length > 0) {
+                for(var i = 0; i < $scope.horarios.length; i++) {
+                    if($scope.horarios[i]._id == horarioid) {
+                        $scope.horario = $scope.horarios[i];
+                        return true;
+                    }
+                }
+            }
+            $scope.horarios = {};
+            return false;
+        }
+        if(horarioid === undefined || bsq() == false) {
+            $.get(servidor + '/api/v1/cursos/' + cursoid + '/horarios').success(function (respuesta) {
+                if($scope.horarios.length === 0) {
+                    $scope.route.location = 'agregar_horario_curso';
+                }
+                if(respuesta.success && horarioid) {
+                    $scope.horarios = respuesta.data;
+                    bsq();
+                } else {
+                    $scope.horarios = [];
+                    $scope.horario = {};
+                }
+                $scope.safeApply();
+            });
+        }
+    }
+
     function cargar_contenido(cursoid, contenidoid) {
         var $scope = $scopes.get('applicationController');
         function bsq () { 
@@ -254,10 +286,22 @@
                 location: 'horario_curso',
                 logged: true,
                 before: function (params) {
-                    var $scope = $scopes.get('applicationController');
-                    $scope.horario = {};
-                    $scope.horarios = [];
-                    cargar_curso(params.route.parametros.id);
+                    var cursoid = params.route.parametros.id;
+                    cargar_curso(cursoid);
+                    cargar_horario(cursoid);
+                    return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
+                }
+            },
+            {
+                route: '/curso/:id/editar/horario/:horario',
+                api: servidor + '/plantillasHTML/editar_curso.html',
+                location: 'editar_horario_curso',
+                logged: true,
+                before: function (params) {
+                    var cursoid = params.route.parametros.id;
+                    var horario = params.route.parametros.horario;
+                    cargar_curso(cursoid);
+                    cargar_horario(cursoid, horario);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
             }
@@ -796,7 +840,7 @@
                     }
                 },
                 agregar_horario() {
-                    $scope.route.location = 'agregar_horario';
+                    $scope.route.location = 'agregar_horario_curso';
                 },
                 cancelar_horario() {
                     $scope.route.location = 'horario_curso';

@@ -556,11 +556,19 @@ module.exports = function (config) {
                         res.end();
                     }
                 };
-                Horarios.add(dato);
+                Horarios.add(dato, success, error);
             } else {
                 res.json({success: false, error: 'No eres el creador'});
             }
         }, false);
+    });
+
+    router.get('/:cursoid/horarios', function (req, res, next) {
+        Horarios.find(function (error, result) {
+            result.toArray(function(err, data) {
+                res.json({success:true,data:data});
+            });
+        });
     });
 
     return router;

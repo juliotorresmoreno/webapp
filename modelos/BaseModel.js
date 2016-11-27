@@ -117,10 +117,12 @@ module.exports = function (config, modelo) {
                                     coleccion.insert(data, function (err, result) {
                                         callback !== undefined ? callback(result) : '';
                                     });
-                                } else
+                                } else {
                                     error !== undefined ? error({code: 1001, error: resultado}) : '';
-                            } else
+                                }
+                            } else {
                                 error !== undefined ? error({code: 1000, mensaje: 'No se ha seleccionado la coleccion.'}) : '';
+                            }
                         }
                     });
                 } else {

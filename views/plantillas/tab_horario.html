@@ -1,11 +1,11 @@
 <div ng-if="['horario_curso','agregar_horario'].indexOf(applicationController.location)+1">
-     <div ng-if="route.location === 'horario_curso'">
+     <div ng-if="['horario_curso'].indexOf(route.location)+1">
         <br>
         <div class="listview">
             <div style="color: black" ng-repeat="horario in horarios" class="list">
                 <img src="/icons/png/notepad.png" class="list-icon">
-                <a class="list-title">
-                    {{horario.nombre}}
+                <a ng-href="{{applicationController.servidor}}/curso/58221d207e0dfc1eb6b66502/editar/horario/{{horario._id}}" class="list-title">
+                    {{horario.evento}}
                 </a>
                 <div class="list-remark">{{ curso.creador }}</div>
             </div>
@@ -14,7 +14,7 @@
             Agregar
         </button>
     </div>
-    <div ng-if="route.location === 'agregar_horario'">
+    <div ng-if="['agregar_horario_curso', 'editar_horario_curso'].indexOf(route.location)+1">
         <br/>
         <div><label>Nombre del evento:</label></div>
         <div class="input-control text full-size">

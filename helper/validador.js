@@ -10,16 +10,18 @@
         confirmar: 'El campo {campo} debe ser confirmado.',
         duplicado: 'El {campo} {valor} ya ha sido registrado antes.',
         enum: 'El valor del campo {campo} no es valido.',
-        foraneo: 'El {campo} {valor} no existe.'
+        foraneo: 'El {campo} {valor} no existe.',
+        pattern: 'El valor del {campo} tiene un formato invalido.',
     };
     //var alfabeto = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
-    var alfabeto = /[A-Za-zñÑáéíóúÁÉÍÓÚ]*/
+    var alfabeto = /[A-Za-zñÑáéíóúÁÉÍÓÚ]*/;
     var numeros = /[0-9]/;
     var especiales = '_-';
     function init(validator, md5) {
         validador = function (modelo, dato, config) {
-            if (config === undefined)
+            if (config === undefined) {
                 config = {};
+            }
             var campo, resultado = {success: true}, permitido, caracter, filtro;
             var estado = 0, limite = modelo.campos.length;
             var buscarDuplicado = function (campo, valor) {
@@ -111,6 +113,9 @@
                             }
                         };
                     };
+                    if(campo.pattern && new RegExp(campo.pattern).test(valor)) {
+                        resultado[campo.nombre].push(errores.pattern.replace('{campo}', campo.nombre));
+                    }
                     switch (campo.formato) {
                         case 'email':
                             if (!validator.isEmail(valor))

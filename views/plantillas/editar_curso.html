@@ -32,7 +32,7 @@
                 ng-show="curso._id">
                 <a ng-href="/curso/{{curso._id}}/editar/contenido">Contenido</a>
             </li>
-            <li ng-class="{active:['horario_curso','agregar_horario'].indexOf(applicationController.location)+1}" 
+            <li ng-class="{active:['horario_curso','agregar_horario_curso','editar_horario_curso'].indexOf(applicationController.location)+1}" 
                 ng-show="curso._id">
                 <a ng-href="/curso/{{curso._id}}/editar/horario">Horario</a>
             </li>

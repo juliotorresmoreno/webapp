@@ -28,61 +28,112 @@
         }
     }
 
-    function cargar_contenido(id, callback) {
+    function cargar_contenido(cursoid, contenidoid) {
         var $scope = $scopes.get('applicationController');
-        $.get(servidor + '/api/v1/cursos/' + id + '/contenidos').success(function (respuesta) {
-            $scope.contenidos = respuesta.data;
-            if(respuesta.data.length === 0) {
-                $scope.contenido = {};
-                if($scope.route.location === 'contenido_curso') {
-                    $scope.route.location = 'agregar_contenido_curso';
+        function bsq () { 
+            if($scope.contenidos && $scope.contenidos.length > 0) {
+                for(var i = 0; i < $scope.contenidos.length; i++) {
+                    if($scope.contenidos[i]._id == contenidoid) {
+                        var html = '<iframe width="560" \
+                                            height="315" \
+                                            src="https://www.youtube.com/embed/' + $scope.contenidos[i].video + '" \
+                                            frameborder="0" \
+                                            style="margin-left: 50%; transform: translateX(-50%);" \
+                                            allowfullscreen></iframe>';
+                        $scope.contenido = $scope.contenidos[i];
+                        $scope.contenido.video_html = html;
+                        return true;
+                    }
                 }
             }
-            if(typeof callback === 'function') {
-                callback($scope, respuesta);
-            }
-            $scope.safeApply();
-        });
-    }
-
-    function cargar_actividades(contenido, callback, agregar) {
-        var $scope = $scopes.get('applicationController');
-        $.get(servidor + '/api/v1/cursos/contenido/' + contenido + '/actividades').success(function (respuesta) {
-            if(respuesta.success) {
-                $scope.actividades = respuesta.data;
-                if(respuesta.data.length === 0 && agregar !== false) {
-                    $scope.actividad = {};
-                    $scope.route.location = 'agregar_actividad_curso';
+            $scope.contenido = {};
+            return false;
+        }
+        if(contenidoid == undefined || bsq() == false) {
+            $.get(servidor + '/api/v1/cursos/' + cursoid + '/contenidos').success(function (respuesta) {
+                $scope.contenidos = respuesta.data;
+                if($scope.contenidos.length === 0) {
+                    $scope.contenido = {};
+                    if($scope.route.location === 'contenido_curso') {
+                        $scope.route.location = 'agregar_contenido_curso';
+                    }
                 }
-                if(typeof callback === 'function') {
-                    callback($scope, respuesta);
+                if(respuesta.success && contenidoid) {
+                    bsq();
                 }
                 $scope.safeApply();
-            } else {
-                $scope.applicationController.mostrarErrores(respuesta);
-            }
-        });
+            });
+        }
     }
 
-    function cargar_preguntas(actividad, callback) {
+    function cargar_actividades(contenido, actividad, agregar) {
+        var $scope = $scopes.get('applicationController');
+        var url = servidor + '/api/v1/cursos/contenido/' + contenido + '/actividades';
+        function bsq() {
+            if($scope.actividades && $scope.actividades.length > 0) {
+                for(var i = 0; i < $scope.actividades.length; i++) {
+                    if($scope.actividades[i]._id == actividad) {
+                        $scope.actividad = $scope.actividades[i];
+                        return true;
+                    }
+                }
+            }
+            $scope.actividad = {};
+            return false;
+        }
+        if(actividad == undefined || bsq() === false) {
+            $.get(url).success(function (respuesta) {
+                if(respuesta.success) {
+                    $scope.actividades = respuesta.data;
+                    if(respuesta.data.length === 0 && agregar !== false) {
+                        $scope.actividad = {};
+                        $scope.route.location = 'agregar_actividad_curso';
+                    }
+                    if(respuesta.success && actividad) {
+                        bsq();
+                    }
+                    $scope.safeApply();
+                } else {
+                    $scope.applicationController.mostrarErrores(respuesta);
+                }
+            });
+        }
+    }
+
+    function cargar_preguntas(actividad, pregunta) {
         var $scope = $scopes.get('applicationController');
         var url = servidor + '/api/v1/cursos/actividad/' + actividad + '/preguntas';
-        $.get(url).success(function (respuesta) {
-            if(respuesta.success) {
-                $scope.preguntas = respuesta.data;
-                if(respuesta.data.length === 0) {
-                    $scope.pregunta = {};
-                    $scope.respuestas = [];
-                    $scope.route.location = 'agregar_pregunta_actividad_curso';
+        function bsq() {
+            if($scope.preguntas && $scope.preguntas.length > 0) {
+                for(var i = 0; i < $scope.preguntas.length; i++) {
+                    if($scope.preguntas[i]._id == pregunta) {
+                        $scope.pregunta = $scope.preguntas[i];
+                        $scope.respuestas = $scope.preguntas[i].respuestas;
+                        return true;
+                    }
                 }
-                if(typeof callback === 'function') {
-                    callback($scope, respuesta);
-                }
-                $scope.safeApply();
-            } else {
-                $scope.applicationController.mostrarErrores(respuesta);
             }
-        });
+            $scope.pregunta = {};
+            return false;
+        }
+        if(pregunta == undefined || bsq() === false) {
+            $.get(url).success(function (respuesta) {
+                if(respuesta.success) {
+                    $scope.preguntas = respuesta.data;
+                    if(respuesta.data.length === 0) {
+                        $scope.pregunta = {tipo:'opcion'};
+                        $scope.respuestas = [];
+                        $scope.route.location = 'agregar_pregunta_actividad_curso';
+                    }
+                    if(respuesta.success && pregunta) {
+                        bsq();
+                    }
+                    $scope.safeApply();
+                } else {
+                    $scope.applicationController.mostrarErrores(respuesta);
+                }
+            });
+        }
     }
 
     routers.add({
@@ -127,21 +178,10 @@
                 location: 'editar_contenido_curso',
                 logged: true,
                 before: function (params) {
-                    cargar_curso(params.route.parametros.id);
-                    cargar_contenido(params.route.parametros.id, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.contenido = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.contenido) {
-                                    $scope.contenido = respuesta.data[i];
-                                    break;
-                                }
-                            }
-                        }
-                    });
+                    var cursoid = params.route.parametros.id;
+                    var contenido = params.route.parametros.contenido;
+                    cargar_curso(cursoid);
+                    cargar_contenido(cursoid, contenido);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
             },
@@ -151,9 +191,12 @@
                 location: 'actividades_curso',
                 logged: true,
                 before: function (params) {
-                    cargar_curso(params.route.parametros.id);
-                    cargar_contenido(params.route.parametros.id);
-                    cargar_actividades(params.route.parametros.contenido);
+                    var cursoid = params.route.parametros.id;
+                    var contenido = params.route.parametros.contenido;
+                    var actividad = params.route.parametros.actividad;
+                    cargar_curso(cursoid);
+                    cargar_contenido(cursoid, contenido);
+                    cargar_actividades(contenido, actividad);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
             },
@@ -163,35 +206,12 @@
                 location: 'editar_actividad_curso',
                 logged: true,
                 before: function (params) {
-                    cargar_curso(params.route.parametros.id);
-                    cargar_contenido(params.route.parametros.id, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.contenido = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.contenido) {
-                                    $scope.contenido = respuesta.data[i];
-                                    break;
-                                }
-                            }
-                        }
-                    });
-                    cargar_actividades(params.route.parametros.contenido, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.actividad = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.actividad) {
-                                    $scope.actividad = respuesta.data[i];
-                                    break;
-                                }
-                            }
-                        }
-                    });
+                    var cursoid = params.route.parametros.id;
+                    var contenido = params.route.parametros.contenido;
+                    var actividad = params.route.parametros.actividad;
+                    cargar_curso(cursoid);
+                    cargar_contenido(cursoid, contenido);
+                    cargar_actividades(contenido, actividad);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
             },
@@ -205,34 +225,8 @@
                     var contenido = params.route.parametros.contenido;
                     var actividad = params.route.parametros.actividad;
                     cargar_curso(cursoid);
-                    cargar_contenido(params.route.parametros.id, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.contenido = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.contenido) {
-                                    $scope.contenido = respuesta.data[i];
-                                    break;
-                                }
-                            }
-                        }
-                    });
-                    cargar_actividades(contenido, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.actividad = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.actividad) {
-                                    $scope.actividad = respuesta.data[i];
-                                    break;
-                                }
-                            }
-                        }
-                    });
+                    cargar_contenido(cursoid, contenido);
+                    cargar_actividades(contenido, actividad);
                     cargar_preguntas(actividad);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
@@ -246,51 +240,11 @@
                     var cursoid = params.route.parametros.id;
                     var contenido = params.route.parametros.contenido;
                     var actividad = params.route.parametros.actividad;
+                    var pregunta = params.route.parametros.pregunta;
                     cargar_curso(cursoid);
-                    cargar_contenido(params.route.parametros.id, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.contenido = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.contenido) {
-                                    $scope.contenido = respuesta.data[i];
-                                    break;
-                                }
-                            }
-                            $scope.safeApply();
-                        }
-                    });
-                    cargar_actividades(contenido, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.actividad = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.actividad) {
-                                    $scope.actividad = respuesta.data[i];
-                                    break;
-                                }
-                            }
-                        }
-                    });
-                    cargar_preguntas(actividad, function ($scope, respuesta) {
-                        if(respuesta.success) {
-                            if(respuesta.data.length === 0) {
-                                $scope.pregunta = {};
-                                return;
-                            }
-                            for(var i = 0; i < respuesta.data.length; i++) {
-                                if(respuesta.data[i]._id == params.route.parametros.pregunta) {
-                                    $scope.pregunta = respuesta.data[i];
-                                    $scope.respuestas = respuesta.data[i].respuestas;
-                                    break;
-                                }
-                            }
-                        }
-                    });
+                    cargar_contenido(cursoid, contenido);
+                    cargar_actividades(contenido, actividad);
+                    cargar_preguntas(actividad, pregunta);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
             }
@@ -657,7 +611,9 @@
                         if(result.success) {
                             $scope.applicationController.mostrarInfo(result.mensaje);
                             $scopes.get('applicationController').contenido = {};
-                            $scope.route.parametros.contenido = result.id;
+                            if(result.id) {
+                                $scope.route.parametros.contenido = result.id;
+                            }
                             $scope.safeApply();
                             if(accion == 'continuar') {
                                 $scope.cursosController.continuar_contenido();
@@ -715,7 +671,7 @@
                     $scopes.get('applicationController').actividad = {};
                     $scope.route.location = 'agregar_actividad_curso';
                 },
-                guardar_actividad() {
+                guardar_actividad(accion) {
                     var scope = $scopes.get('applicationController');
                     var url = servidor + '/api/v1/cursos/' + 
                               scope.route.parametros.id + 
@@ -726,9 +682,13 @@
                     $.post(url, data).success(function (result) {
                         if(result.success) {
                             $scope.applicationController.mostrarInfo(result.mensaje);
-                            $scope.cursosController.cancelar_actividad();
                             $scopes.get('applicationController').actividad = {};
                             $scope.safeApply();
+                            if(accion == 'continuar') {
+                                $scope.cursosController.continuar_actividad();
+                            } else {
+                                $scope.cursosController.cancelar_actividad();
+                            }
                         } else {
                             $scope.applicationController.mostrarErrores(result);
                         }

@@ -1,7 +1,7 @@
 <div ng-controller='cursosController' style="margin-top: 0;">
     <div style="margin-bottom: 10px">
         <span ng-if="curso">
-            <a ng-href="/curso/{{curso._id}}">{{curso.nombre}}</a>
+            <a ng-href="/curso/{{curso._id}}/editar">{{curso.nombre}}</a>
         </span>
         <span ng-if="route.parametros.contenido">
             /

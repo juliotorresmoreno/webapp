@@ -3,40 +3,41 @@
         <div class="heading" style="padding-left: 10px">Renombrar galeria {{galerias.id}}.</div>
         <div class="content padding10">
             <div class="input-control text" style="width: 100%">
-                <input type="text" class="form-control" placeholder="Nombre" ng-model='galerias.nombre' />
+                <input type="text" class="form-control" placeholder="Nombre" 
+                        ng-model='galerias.nombre' />
             </div>
             <permisos style="margin-right: 10px" ng-if="galerias.modo == 'galeria'" 
                       data-id='guardar' leyenda='Guardar' permiso='galerias.permiso'
                       permisos='applicationController.permisos'
                       callback='galeriasController.save'></permisos>
-            <button style="margin-right: 10px" ng-if="galerias.modo == 'galeria'" class="button" 
+            <button style="margin-right: 10px" ng-if="galerias.modo == 'galeria'" class="button primary" 
                     ng-click='galeriasController.tomarFoto()'>
                 Tomar foto
             </button>
-            <button style="margin-right: 10px" ng-if="galerias.modo == 'galeria'" class="button" 
+            <button style="margin-right: 10px" ng-if="galerias.modo == 'galeria'" class="button primary" 
                     ng-click='galeriasController.subirFoto()'>
                 Examinar
             </button>
-            <button style="margin-right: 10px" ng-if="galerias.modo == 'tomarFoto'" class="button" 
+            <button style="margin-right: 10px" ng-if="galerias.modo == 'tomarFoto'" class="button primary" 
                     ng-click='galeriasController.capturarFoto()'>
                 Capturar foto
             </button>
             <input style="display: none" type="file" id="files" 
                     onchange="$scopes.get('galeriasController').galeriasController.filesChange()" multiple >
-            <button style="margin-right: 10px" ng-if="'salvarFotoTomada' == galerias.modo" class="button" 
+            <button style="margin-right: 10px" ng-if="'salvarFotoTomada' == galerias.modo" class="button primary" 
                     ng-click='galeriasController.guardarFotoCapturada()'>
                 Guardar foto
             </button>
-            <button style="margin-right: 10px" ng-if="'subirFotos' == galerias.modo" class="button" 
+            <button style="margin-right: 10px" ng-if="'subirFotos' == galerias.modo" class="button primary" 
                     ng-click='galeriasController.subirTodo()'>
                 Guardar foto(s)
             </button>
-            <button style="margin-right: 10px" class="button" 
+            <button style="margin-right: 10px" class="button primary" 
                     ng-if="['tomarFoto', 'salvarFotoTomada'].indexOf(galerias.modo) >= 0" 
                     ng-click='galeriasController.cancelarTomarFoto()'>
                 Cancelar
             </button>
-            <button ng-if="'subirFotos' == galerias.modo" class="button" 
+            <button ng-if="'subirFotos' == galerias.modo" class="button primary" 
                     ng-click='galeriasController.subirCancelar()'>
                 Cancelar
             </button>

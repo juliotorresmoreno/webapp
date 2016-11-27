@@ -25,15 +25,20 @@
 
             <div>
                 <span>
-                    <button class="button primary" ng-click="cursosController.guardar_actividad()">
-                        Guardar
+                    <button class="button primary" 
+                            ng-click="cursosController.guardar_actividad('terminar')">
+                        Guardar y terminar
                     </button>
-                    <button ng-if="route.parametros.actividad != undefined" 
-                            class="button primary" 
+                    <button class="button primary" 
+                            ng-click="cursosController.guardar_actividad('continuar')">
+                        Guardar y continuar
+                    </button>
+                    <button ng-if="contenido._id" class="button primary" 
                             ng-click="cursosController.continuar_actividad()">
                         Continuar
                     </button>
-                    <button class="button primary" ng-click="cursosController.cancelar_actividad()">
+                    <button class="button primary" 
+                            ng-click="cursosController.cancelar_actividad()">
                         Cancelar
                     </button>
                 </span>

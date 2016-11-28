@@ -436,6 +436,16 @@
                     });
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
+            },
+            {
+                route: '/curso/:id/horario',
+                api: servidor + '/plantillasHTML/curso.html',
+                location: 'horario',
+                logged: true,
+                before: function (params) {
+                    params.preload = false;
+                    return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
+                }
             }
         ]
     });
@@ -520,7 +530,7 @@
                 'curso', 'contenido', 'contenidos', 'actividad',
                 'contenido_curso',
                 'contenidos_curso',
-                'horario_curso',
+                'horario_curso', 'horario',
                 'transmitir_curso',
                 'transmicion_curso'
             ];

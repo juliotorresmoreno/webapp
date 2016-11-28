@@ -1,6 +1,7 @@
+"use strict";
 /* global data, process */
 
-module.exports = function (config) {
+module.exports = function (config) { 
     var router = config.express.Router();
     var params = config, requests = {}, conected = {};
     var usuariosChats = config.modelos.BaseModel(config);

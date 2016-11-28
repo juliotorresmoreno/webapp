@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div style="display: flex; flex-direction: column">
+<div resize style="display: flex; flex-direction: column; height:100%">
     <div class="app-bar top navbar-cute" data-role="appbar"> <!-- fixed-top -->
         <a class="app-bar-element branding" href="/">
             <img height="30px" style="height: 30px" src="/images/E(du)cate-02.png">
@@ -89,13 +89,13 @@
                     </ul>
                 </div>
                 <div class="cell auto-size padding20 ">
-                    <div style="min-height: 350px;" ng-if="preload !== true" 
+                    <div style="min-height: 350px; height:100%;" ng-if="preload !== true" 
                         ng-html-compile='applicationController.contenidoHTML'></div>
                     <div ng-if="preload === true" style="min-height: 350px;" >
                         <div data-role="preloader" data-type="cycle" data-style="color"></div>
                     </div>
                 </div>
-                <div ng-if="mostrarChat" style="padding: 20px 20px 0 0" 
+                <div ng-if="mostrarChat===true" style="padding: 20px 20px 0 0" 
                     class="listview cell bg-withe size-x200 panel-chat">
                     <a style="min-height: 40px; height: auto; color: #000" class="list" ng-repeat="chat in chats" ng-href="/chats/{{chat._id}}">
                         <img ng-if="chat.conectado" src="/vendor/148705-essential-collection/png/user.png" class="list-icon">
@@ -106,7 +106,8 @@
                         </span>
                     </a>
                 </div>
-                <div ng-include="chatEnbebido" ng-if="!mostrarChat" class="cell padding20 size-x400" style="height: 100%;"></div>
+                <div ng-include="chatEnbebido" ng-if="!mostrarChat" class="cell padding20 size-x400" 
+                     style="height: 100%;"></div>
             </div>
         </div>
     </div>

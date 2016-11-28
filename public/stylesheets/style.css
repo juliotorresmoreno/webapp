@@ -149,14 +149,21 @@ input[type="text"]:focus, input[type="password"]:focus,textarea:focus {
     background-color: #333 !important;
     border: 1px solid #222 !important;
 }
+.panel .heading {
+    height: auto;
+}
 
-button, .button {
+.panel .content {
+    background-color: #EEE;
+}
+
+.primary {
     color: white
 }
 
-.sidebar2 li *:hover {
+.sidebar2 *:hover {
     background-color: #333 !important;
-    color: white
+    color: white !important;
 }
 
 .menu-items-small {

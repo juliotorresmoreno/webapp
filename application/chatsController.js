@@ -14,15 +14,6 @@
             }
         }
     };
-    var establecerVideoLLamada = function (chatid, usuarioid) {
-        var $scope = $scopes.get('applicationController') || $scopes.get('chatsController');
-        for (var i = 0; i < $scope.chat.mensajes.length; i++) {
-            if (['videollamada', 'llamada'].indexOf($scope.chat.mensajes[i].tipo === 'videollamada') >= 0) {
-                $scope.chat.mensajes[i].estado = 'eliminado';
-            }
-        }
-        window.open(location.href + '/external/VideoLLamada', "", "titlebar=no, fullscreen=yes");
-    };
     var establecerLLamada = function (chatid, usuarioid) {
         var $scope = $scopes.get('applicationController') || $scopes.get('chatsController');
         for (var i = 0; i < $scope.chat.mensajes.length; i++) {
@@ -30,8 +21,22 @@
                 $scope.chat.mensajes[i].estado = 'eliminado';
             }
         }
-        window.open(location.href + '/external/LLamada', "", "titlebar=no, fullscreen=yes");
     };
+
+    function VideoLLamada(chatid) {
+        var $scope = $scopes.get('applicationController') || $scopes.get('chatsController');
+        $scope.webrtc = new SimpleWebRTC({
+            localVideoEl: 'localVideo',
+            remoteVideosEl: 'remotesVideos',
+            autoRequestMedia: true,
+            media: { audio: true, video: true },
+            url: 'https://' + location.hostname + ':8088'
+        });
+        console.log(chatid)
+        $scope.webrtc.on('readyToCall', function() {
+            $scope.webrtc.joinRoom(chatid);
+        });
+    }
 
     routerswss.add({
         peticion: 'amigoConectado',
@@ -127,7 +132,16 @@
                             $scope.safeApply();
                             break;
                         case 'aceptar':
-                            establecerVideoLLamada($scope.chat.chatid, $scope.chatUser._id);
+                            if($scope.chatUser.usuario == data.usuario) {
+                                $scope.mostrarChat = 'lateral';
+                                for (var i = 0; i < $scope.chat.mensajes.length; i++) {
+                                    if ($scope.chat.mensajes[i].tipo === 'videollamada') {
+                                        $scope.chat.mensajes[i].estado = 'eliminado';
+                                    }
+                                }
+                                VideoLLamada($scope.chat.chatid);
+                                $scope.safeApply();
+                            }
                             break;
                     }
                 } else {
@@ -294,17 +308,41 @@
     
     application.controller('chatsController', ['$scope',
         function ($scope) {
-            if ($scope.safeApply === undefined) {
-                $scope.safeApply = function (fn) {
-                    var phase = this.$root !== undefined ? this.$root.$$phase : undefined;
-                    if (phase === '$apply' || phase === '$digest') {
-                        if (fn && (typeof (fn) === 'function'))
-                            fn();
-                    } else {
-                        this.$apply(fn);
+            // if ($scope.safeApply === undefined) {
+            //     $scope.safeApply = function (fn) {
+            //         var phase = this.$root !== undefined ? this.$root.$$phase : undefined;
+            //         if (phase === '$apply' || phase === '$digest') {
+            //             if (fn && (typeof (fn) === 'function'))
+            //                 fn();
+            //         } else {
+            //             this.$apply(fn);
+            //         }
+            //     };
+            // }
+
+            $scope.application.items.curso = {
+                titulo: 'Conversacion',
+                items: [
+                    {
+                        titulo: 'VideoLLamada',
+                        url: '',
+                        onclick() {
+                            $scope.chatsController.solicitarVideoLlamada();
+                        },
+                        mostrar: () => true
+                    },
+                    {
+                        titulo: 'LLamada',
+                        url: '',
+                        onclick() {
+                            $scope.chatsController.solicitarLlamada();
+                        },                        
+                        mostrar: () => true
                     }
-                };
-            }
+                ],
+                mostrar: () => true
+            };
+
             $scope.chatsController = {
                 modo: '',
                 rechazarVideoLlamada: function (mensaje) {
@@ -312,13 +350,15 @@
                     $.post(servidor + '/api/v1/chats/videollamada', {
                         usuario: $scope.chatUser._id, accion: 'cancelar'
                     });
-                },
+                }, 
                 aceptarVideoLlamada: function (mensaje) {
                     if (mensaje.tipo === 'videollamada') {
                         $.post(servidor + '/api/v1/chats/videollamada', {
-                            usuario: $scope.chatUser._id, accion: 'aceptar'
+                            usuario: mensaje.usuario, accion: 'aceptar'
                         });
-                        establecerVideoLLamada($scope.chat.chatid, $scope.chat._id);
+                        $scope.mostrarChat = 'lateral';
+                        mensaje.estado = 'eliminado';
+                        VideoLLamada($scope.chat.chatid);
                     }
                 },
                 rechazarLlamada: function (mensaje) {
@@ -329,7 +369,7 @@
                 },
                 aceptarLlamada: function (mensaje) {
                     if (mensaje.tipo === 'llamada') {
-                        $scope.conexion.enviar('llamada', {usuario: $scope.chat._id, accion: 'aceptar'});
+                        $scope.conexion.enviar('llamada', {usuario: mensaje.usuario, accion: 'aceptar'});
                         establecerLLamada($scope.chat.chatid, $scope.chat._id);
                     }
                 },
@@ -359,7 +399,7 @@
                     });
                 },
                 enviar: function (userid) {
-                    if ($scope.chatsController.mensaje.trim().length > 3) {
+                    if ($scope.chatsController.mensaje.trim() != '') {
                         $.post(servidor + '/api/v1/chats/mensaje', {
                             tipo: 'usuario',
                             usuario: userid,
@@ -371,7 +411,7 @@
                     } else {
                         $scope.applicationController.mostrarErrores({
                             success: false,
-                            error: 'Debes escribir mas de 3 caracteres'
+                            error: 'Debes escribir algo'
                         });
                     }
                 },

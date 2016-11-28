@@ -443,7 +443,9 @@
                 location: 'horario',
                 logged: true,
                 before: function (params) {
-                    params.preload = false;
+                    var cursoid = params.route.parametros.id;
+                    cargar_curso(cursoid);
+                    cargar_horario(cursoid);
                     return this.parent.view ? routers.estados.NOCONSULTAR : routers.estados.CONSULTAR;
                 }
             }

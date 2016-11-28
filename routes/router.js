@@ -101,11 +101,15 @@ module.exports = function (params) {
     });
     router.get('*', function (req, res, next) {
         res.setHeader('Etag', 'W/"1499c-1504' + rnd);
-        if (req.headers['if-none-match'] === 'W/"1499c-1504' + rnd) {
-            res.status(304).end();
-            return;
-        }
-        res.send(params.renderizar(root));
+        params.fs.stat('./views/index.html', function (erro, attr) {
+            res.setHeader('Etag', attr.mtime);
+            if(req.headers['if-none-match'] == attr.mtime) {
+                res.status(304).end();
+            } else {
+                root = fs.readFileSync('./views/index.html').toString();
+                res.send(params.renderizar(root));
+            }
+        });
     });
     return router;
 };

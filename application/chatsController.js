@@ -305,42 +305,26 @@
             }
         ]
     });
-    
+
     application.controller('chatsController', ['$scope',
         function ($scope) {
-            // if ($scope.safeApply === undefined) {
-            //     $scope.safeApply = function (fn) {
-            //         var phase = this.$root !== undefined ? this.$root.$$phase : undefined;
-            //         if (phase === '$apply' || phase === '$digest') {
-            //             if (fn && (typeof (fn) === 'function'))
-            //                 fn();
-            //         } else {
-            //             this.$apply(fn);
-            //         }
-            //     };
-            // }
-
             $scope.application.items.curso = {
                 titulo: 'Conversacion',
                 items: [
                     {
                         titulo: 'VideoLLamada',
                         url: '',
-                        onclick() {
-                            $scope.chatsController.solicitarVideoLlamada();
-                        },
+                        onclick() { $scope.chatsController.solicitarVideoLlamada(); },
                         mostrar: () => true
                     },
                     {
                         titulo: 'LLamada',
                         url: '',
-                        onclick() {
-                            $scope.chatsController.solicitarLlamada();
-                        },                        
+                        onclick() { $scope.chatsController.solicitarLlamada(); },
                         mostrar: () => true
                     }
                 ],
-                mostrar: () => true
+                mostrar: () => $scope.route.location == "conversacion"
             };
 
             $scope.chatsController = {

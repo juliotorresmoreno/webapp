@@ -563,8 +563,15 @@
                             }
                         },
                         {
+                            titulo: 'Ver curso',
+                            url: '/curso/' + $scope.route.parametros.id,
+                            mostrar: function () {
+                                return $scope.curso.registrado || $scope.curso.creador === usuario;
+                            }
+                        },
+                        {
                             titulo: 'Retirar',
-                            url: '', // '/curso/' + $scope.route.parametros.id + '/retirar',
+                            url: '',
                             onclick: function () {
                                 $scope.cursosController.retirar();
                             },
